@@ -1,1 +1,824 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Aziz & Suliman Bali 2026 Trip Plan</title>
+  <style>
+    :root {
+      --slate-950: #020617;
+      --slate-900: #0f172a;
+      --slate-800: #1e293b;
+      --slate-700: #334155;
+      --slate-600: #475569;
+      --slate-500: #64748b;
+      --slate-200: #e2e8f0;
+      --slate-100: #f1f5f9;
+      --teal-700: #0f766e;
+      --teal-600: #0d9488;
+      --teal-100: #ccfbf1;
+      --teal-50: #f0fdfa;
+      --amber-100: #fef3c7;
+      --amber-50: #fffbeb;
+      --white: #ffffff;
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: linear-gradient(to bottom, #ecfeff, #ffffff, #fffbeb);
+      color: var(--slate-900);
+    }
+
+    .container {
+      width: min(1180px, calc(100% - 40px));
+      margin: 0 auto;
+    }
+
+    .hero {
+      position: relative;
+      overflow: hidden;
+      background: radial-gradient(circle at top left, rgba(20,184,166,.55), transparent 35%),
+                  radial-gradient(circle at bottom right, rgba(251,191,36,.35), transparent 35%),
+                  var(--slate-950);
+      color: var(--white);
+    }
+
+    .hero::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      opacity: .22;
+      background-image: linear-gradient(120deg, rgba(255,255,255,.12) 1px, transparent 1px);
+      background-size: 36px 36px;
+      pointer-events: none;
+    }
+
+    .hero-inner {
+      position: relative;
+      z-index: 1;
+      display: grid;
+      grid-template-columns: minmax(0, 1.25fr) minmax(320px, .75fr);
+      gap: 48px;
+      align-items: center;
+      padding: 92px 0;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      border: 1px solid rgba(255,255,255,.2);
+      background: rgba(255,255,255,.1);
+      border-radius: 999px;
+      padding: 10px 16px;
+      font-size: 14px;
+      font-weight: 700;
+      backdrop-filter: blur(12px);
+    }
+
+    h1 {
+      margin: 22px 0 0;
+      max-width: 820px;
+      font-size: clamp(44px, 8vw, 76px);
+      line-height: .95;
+      letter-spacing: -0.06em;
+      font-weight: 950;
+    }
+
+    .hero p {
+      max-width: 700px;
+      margin: 24px 0 0;
+      color: rgba(255,255,255,.78);
+      font-size: 20px;
+      line-height: 1.75;
+    }
+
+    .hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-top: 32px;
+    }
+
+    .countdown-card {
+      margin-top: 26px;
+      max-width: 680px;
+      border-radius: 28px;
+      padding: 22px;
+      background: rgba(255,255,255,.12);
+      border: 1px solid rgba(255,255,255,.18);
+      backdrop-filter: blur(14px);
+      box-shadow: 0 20px 50px rgba(0,0,0,.16);
+    }
+
+    .countdown-title {
+      color: rgba(255,255,255,.72);
+      text-transform: uppercase;
+      letter-spacing: .16em;
+      font-size: 12px;
+      font-weight: 900;
+      margin-bottom: 14px;
+    }
+
+    .countdown-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 10px;
+    }
+
+    .countdown-grid div {
+      border-radius: 18px;
+      padding: 16px 10px;
+      text-align: center;
+      background: rgba(255,255,255,.12);
+      border: 1px solid rgba(255,255,255,.14);
+    }
+
+    .countdown-grid strong {
+      display: block;
+      font-size: clamp(28px, 5vw, 44px);
+      line-height: 1;
+      letter-spacing: -.04em;
+      color: #fff;
+    }
+
+    .countdown-grid span {
+      display: block;
+      margin-top: 7px;
+      font-size: 12px;
+      font-weight: 800;
+      color: rgba(255,255,255,.65);
+      text-transform: uppercase;
+      letter-spacing: .12em;
+    }
+
+    .countdown-card p {
+      margin: 14px 0 0;
+      color: rgba(255,255,255,.72);
+      font-size: 14px;
+      line-height: 1.5;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border: 0;
+      border-radius: 18px;
+      padding: 15px 22px;
+      font-size: 16px;
+      font-weight: 800;
+      text-decoration: none;
+      cursor: pointer;
+      transition: .2s ease;
+    }
+
+    .btn-primary { background: var(--white); color: var(--slate-950); }
+    .btn-primary:hover { background: #ecfeff; transform: translateY(-1px); }
+    .btn-secondary { background: rgba(255,255,255,.1); color: var(--white); border: 1px solid rgba(255,255,255,.2); }
+    .btn-secondary:hover { background: rgba(255,255,255,.16); transform: translateY(-1px); }
+
+    .hero-info {
+      display: grid;
+      gap: 14px;
+    }
+
+    .info-pill {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      border-radius: 22px;
+      padding: 16px;
+      background: rgba(255,255,255,.14);
+      border: 1px solid rgba(255,255,255,.2);
+      backdrop-filter: blur(12px);
+    }
+
+    .info-pill .icon { font-size: 24px; width: 30px; text-align: center; }
+    .info-label { color: rgba(255,255,255,.62); font-size: 11px; letter-spacing: .18em; text-transform: uppercase; font-weight: 800; }
+    .info-value { margin-top: 3px; color: var(--white); font-weight: 850; }
+
+    section { padding: 70px 0; }
+    section.alt { background: rgba(255,255,255,.68); }
+
+    .section-title {
+      max-width: 780px;
+      margin: 0 auto 34px;
+      text-align: center;
+    }
+
+    .eyebrow {
+      color: var(--teal-700);
+      text-transform: uppercase;
+      letter-spacing: .24em;
+      font-size: 13px;
+      font-weight: 900;
+      margin-bottom: 10px;
+    }
+
+    h2 {
+      margin: 0;
+      font-size: clamp(30px, 5vw, 44px);
+      line-height: 1.08;
+      letter-spacing: -.04em;
+      color: var(--slate-950);
+    }
+
+    .section-title p {
+      margin: 14px 0 0;
+      color: var(--slate-600);
+      line-height: 1.75;
+      font-size: 17px;
+    }
+
+    .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
+    .grid-2 { display: grid; grid-template-columns: repeat(2, 1fr); gap: 18px; }
+
+    .card {
+      background: var(--white);
+      border: 1px solid var(--slate-200);
+      border-radius: 28px;
+      padding: 26px;
+      box-shadow: 0 10px 30px rgba(15,23,42,.04);
+    }
+
+    .card:hover { box-shadow: 0 14px 40px rgba(15,23,42,.08); }
+    .card-icon {
+      display: inline-flex;
+      width: 52px;
+      height: 52px;
+      align-items: center;
+      justify-content: center;
+      border-radius: 18px;
+      background: var(--teal-50);
+      font-size: 26px;
+      margin-bottom: 18px;
+    }
+
+    h3 { margin: 0; color: var(--slate-950); font-size: 22px; letter-spacing: -.02em; }
+    .card p, .muted { color: var(--slate-600); line-height: 1.7; }
+
+    .flight-meta, .mini-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 12px;
+      margin-top: 18px;
+    }
+
+    .mini-box {
+      border-radius: 18px;
+      background: var(--slate-100);
+      padding: 14px;
+      color: var(--slate-700);
+      font-size: 14px;
+      line-height: 1.5;
+    }
+
+    .mini-box strong { display: block; color: var(--slate-950); margin-bottom: 3px; }
+    .teal-note { margin-top: 14px; color: var(--teal-700); font-weight: 800; font-size: 14px; }
+
+    .filters {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 9px;
+      margin-bottom: 30px;
+    }
+
+    .filter-btn {
+      border: 1px solid var(--slate-200);
+      background: var(--white);
+      color: var(--slate-700);
+      border-radius: 999px;
+      padding: 10px 15px;
+      font-weight: 800;
+      cursor: pointer;
+      transition: .2s ease;
+    }
+
+    .filter-btn.active, .filter-btn:hover {
+      background: var(--slate-950);
+      color: var(--white);
+      border-color: var(--slate-950);
+    }
+
+    .day-card { transition: .2s ease; }
+    .day-card:hover { transform: translateY(-3px); }
+    .day-head {
+      display: flex;
+      justify-content: space-between;
+      gap: 16px;
+      align-items: flex-start;
+    }
+    .day-label {
+      color: var(--teal-700);
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: .18em;
+      font-weight: 950;
+      margin-bottom: 7px;
+    }
+    .day-location { color: var(--slate-500); font-size: 14px; margin-top: 6px; }
+    .day-emoji {
+      flex: 0 0 auto;
+      width: 50px;
+      height: 50px;
+      display: grid;
+      place-items: center;
+      border-radius: 18px;
+      background: var(--amber-50);
+      font-size: 24px;
+    }
+    .vibe {
+      display: inline-flex;
+      margin-top: 18px;
+      border-radius: 999px;
+      padding: 7px 12px;
+      background: var(--teal-50);
+      color: var(--teal-700);
+      font-size: 13px;
+      font-weight: 900;
+    }
+    ul { margin: 18px 0 0; padding: 0; list-style: none; display: grid; gap: 12px; }
+    li { display: flex; gap: 10px; color: var(--slate-600); line-height: 1.55; font-size: 14px; }
+    li span:first-child { flex: 0 0 auto; }
+
+    .stay-card {
+      display: grid;
+      grid-template-columns: .9fr 1.1fr;
+      gap: 26px;
+    }
+
+    .highlight-box {
+      border-radius: 28px;
+      padding: 26px;
+      background: var(--teal-50);
+    }
+
+    .budget-main {
+      border-radius: 26px;
+      padding: 22px;
+      background: var(--slate-950);
+      color: var(--white);
+      margin-bottom: 18px;
+    }
+    .budget-main .small { color: rgba(255,255,255,.6); text-transform: uppercase; letter-spacing: .18em; font-size: 12px; font-weight: 850; }
+    .budget-main .big { font-size: 32px; font-weight: 950; margin-top: 6px; }
+    .budget-main p { color: rgba(255,255,255,.72); margin: 8px 0 0; }
+
+    .cost-row {
+      display: flex;
+      justify-content: space-between;
+      gap: 16px;
+      align-items: center;
+      border: 1px solid var(--slate-200);
+      border-radius: 18px;
+      padding: 15px;
+      margin-top: 12px;
+      background: var(--white);
+    }
+    .cost-row strong { color: var(--slate-800); }
+    .cost-row span { color: var(--slate-500); text-align: right; font-size: 14px; }
+
+    .final {
+      padding-bottom: 76px;
+    }
+    .final-box {
+      overflow: hidden;
+      border-radius: 34px;
+      background: var(--slate-950);
+      color: var(--white);
+      box-shadow: 0 22px 60px rgba(15,23,42,.16);
+      padding: 44px;
+      display: grid;
+      grid-template-columns: 1.2fr .8fr;
+      gap: 30px;
+    }
+    .final h2 { color: var(--white); }
+    .final p { color: rgba(255,255,255,.74); line-height: 1.75; font-size: 18px; }
+    .summary-card {
+      border-radius: 28px;
+      padding: 24px;
+      background: rgba(255,255,255,.1);
+      border: 1px solid rgba(255,255,255,.14);
+    }
+    .tags { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 18px; }
+    .tag {
+      border-radius: 999px;
+      padding: 8px 11px;
+      background: rgba(255,255,255,.1);
+      border: 1px solid rgba(255,255,255,.14);
+      color: rgba(255,255,255,.82);
+      font-size: 13px;
+      font-weight: 750;
+    }
+
+    .hidden { display: none !important; }
+
+    @media (max-width: 900px) {
+      .hero-inner, .stay-card, .final-box { grid-template-columns: 1fr; }
+      .grid-3, .grid-2 { grid-template-columns: 1fr; }
+      .hero-inner { padding: 68px 0; }
+    }
+
+    @media (max-width: 520px) {
+      .container { width: min(100% - 24px, 1180px); }
+      section { padding: 52px 0; }
+      .flight-meta, .mini-grid { grid-template-columns: 1fr; }
+      .cost-row { align-items: flex-start; flex-direction: column; }
+      .cost-row span { text-align: left; }
+      .final-box { padding: 28px; }
+    }
+  </style>
+</head>
+<body>
+  <header class="hero">
+    <div class="container hero-inner">
+      <div>
+        <div class="badge">🌴 Aziz & Suliman · Bali 2026</div>
+        <h1>Riyadh to Bali Trip Plan</h1>
+        <p>Confirmed flights, Airbnb search status, activity ideas, and budget planning for Aziz and Suliman’s Bali trip from Riyadh.</p>
+        <div class="hero-actions">
+          <a class="btn btn-primary" href="#flights">Flight Details</a>
+          <a class="btn btn-secondary" href="#itinerary">View Itinerary</a>
+        </div>
+        <div class="countdown-card" aria-label="Countdown to departure">
+          <div class="countdown-title">Countdown to departure · SV 572 from Riyadh</div>
+          <div class="countdown-grid">
+            <div><strong id="days">--</strong><span>Days</span></div>
+            <div><strong id="hours">--</strong><span>Hours</span></div>
+            <div><strong id="minutes">--</strong><span>Minutes</span></div>
+            <div><strong id="seconds">--</strong><span>Seconds</span></div>
+          </div>
+          <p id="countdownMessage">Departure: 19 May 2026 at 11:15 AM Riyadh time</p>
+        </div>
+      </div>
+      <div class="hero-info">
+        <div class="info-pill"><div class="icon">👥</div><div><div class="info-label">Travelers</div><div class="info-value">Aziz & Suliman</div></div></div>
+        <div class="info-pill"><div class="icon">📍</div><div><div class="info-label">Route</div><div class="info-value">Riyadh → Bali</div></div></div>
+        <div class="info-pill"><div class="icon">📅</div><div><div class="info-label">Trip window</div><div class="info-value">19–28 May 2026</div></div></div>
+        <div class="info-pill"><div class="icon">⏰</div><div><div class="info-label">Bali stay</div><div class="info-value">7 nights in Bali</div></div></div>
+        <div class="info-pill"><div class="icon">💳</div><div><div class="info-label">Budget</div><div class="info-value">3,000–4,000 SAR / person</div></div></div>
+      </div>
+    </div>
+  </header>
+
+  <section>
+    <div class="container">
+      <div class="section-title">
+        <div class="eyebrow">Overview</div>
+        <h2>Your Bali travel command center</h2>
+        <p>Flights are confirmed and the updated base plan is simpler: 2 nights in Ubud, then 5 nights in Canggu as the main base.</p>
+      </div>
+      <div class="grid-3">
+        <div class="card"><div class="card-icon">✈️</div><h3>Confirmed Flights</h3><p>Etihad/Saudia route via Abu Dhabi with confirmed 30kg checked baggage on each segment.</p></div>
+        <div class="card"><div class="card-icon">🛏️</div><h3>Updated Stay Plan</h3><p>Stay in Ubud first for nature, then use Canggu as the main base for Canggu, Seminyak, Umalas, and one Uluwatu day trip.</p></div>
+        <div class="card"><div class="card-icon">💳</div><h3>Bali Budget</h3><p>Plan around 3,000–4,000 SAR per person for the Bali stay, excluding the confirmed flight ticket.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="flights" class="alt">
+    <div class="container">
+      <div class="section-title">
+        <div class="eyebrow">Confirmed flights</div>
+        <h2>Flight schedule</h2>
+        <p>Booking reference: H6SQC7. All listed times are local to each city.</p>
+      </div>
+      <div class="grid-2">
+        <div class="card">
+          <div class="day-head"><div><div class="day-label">Outbound 1</div><h3>SV 572</h3><p class="muted">Riyadh → Abu Dhabi</p></div><div class="day-emoji">✈️</div></div>
+          <div class="flight-meta"><div class="mini-box"><strong>Depart</strong>19 May 2026 · 11:15</div><div class="mini-box"><strong>Arrive</strong>19 May 2026 · 14:05</div><div class="mini-box"><strong>Aircraft</strong>Airbus A320</div><div class="mini-box"><strong>Baggage</strong>30kg checked baggage</div></div>
+          <p class="muted">RUH Terminal 2 → AUH Terminal A</p><div class="teal-note">Sold as EY 3206</div>
+        </div>
+        <div class="card">
+          <div class="day-head"><div><div class="day-label">Outbound 2</div><h3>EY 476</h3><p class="muted">Abu Dhabi → Bali</p></div><div class="day-emoji">✈️</div></div>
+          <div class="flight-meta"><div class="mini-box"><strong>Depart</strong>19 May 2026 · 21:50</div><div class="mini-box"><strong>Arrive</strong>20 May 2026 · 11:25</div><div class="mini-box"><strong>Aircraft</strong>Boeing 787-10</div><div class="mini-box"><strong>Baggage</strong>30kg checked baggage</div></div>
+          <p class="muted">AUH Terminal A → DPS Terminal I</p><div class="teal-note">Seat H25</div>
+        </div>
+        <div class="card">
+          <div class="day-head"><div><div class="day-label">Return 1</div><h3>EY 477</h3><p class="muted">Bali → Abu Dhabi</p></div><div class="day-emoji">✈️</div></div>
+          <div class="flight-meta"><div class="mini-box"><strong>Depart</strong>27 May 2026 · 18:45</div><div class="mini-box"><strong>Arrive</strong>27 May 2026 · 23:40</div><div class="mini-box"><strong>Aircraft</strong>Boeing 787-10</div><div class="mini-box"><strong>Baggage</strong>30kg checked baggage</div></div>
+          <p class="muted">DPS Terminal I → AUH Terminal A</p><div class="teal-note">Seat H26</div>
+        </div>
+        <div class="card">
+          <div class="day-head"><div><div class="day-label">Return 2</div><h3>EY 551</h3><p class="muted">Abu Dhabi → Riyadh</p></div><div class="day-emoji">✈️</div></div>
+          <div class="flight-meta"><div class="mini-box"><strong>Depart</strong>28 May 2026 · 02:00</div><div class="mini-box"><strong>Arrive</strong>28 May 2026 · 02:45</div><div class="mini-box"><strong>Aircraft</strong>Airbus A320</div><div class="mini-box"><strong>Baggage</strong>30kg checked baggage</div></div>
+          <p class="muted">AUH Terminal A → RUH Terminal 5</p><div class="teal-note">Seat D12</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="container">
+      <div class="section-title"><div class="eyebrow">Villa plan</div><h2>Updated Airbnb stay plan</h2><p>New route: start with 2 nights in Ubud, then stay 5 nights in Canggu as the main base for the rest of the trip.</p></div>
+      <div class="grid-2">
+        <div class="card">
+          <div class="card-icon">🌴</div>
+          <div class="day-label">Ubud · 20–21 May · Checkout 22 May</div>
+          <h3>Private Pool-Villa 2 Bedroom In Ubud Centre</h3>
+          <p>First stay after arriving in Bali. Keep these days Ubud-only for rice terraces, waterfalls, temples, spas, and Ubud cafés.</p>
+          <div class="mini-grid">
+            <div class="mini-box"><strong>Nights</strong>2 nights</div>
+            <div class="mini-box"><strong>Area</strong>Ubud Centre</div>
+            <div class="mini-box"><strong>Setup</strong>2 bedrooms · 2 beds</div>
+            <div class="mini-box"><strong>Best for</strong>Nature + culture</div>
+          </div>
+          <a class="btn btn-primary" style="margin-top:18px;" target="_blank" rel="noopener" href="https://www.airbnb.com/rooms/963311048970455218">Open Airbnb listing</a>
+        </div>
+
+        <div class="card">
+          <div class="card-icon">🌊</div>
+          <div class="day-label">Canggu · 22–26 May · Checkout 27 May</div>
+          <h3>Sweet Canggu Escape with 2 Motorcycles</h3>
+          <p>Main base for the rest of the trip. Use it for Canggu, Berawa, Pererenan, Seminyak, Umalas, and one planned Uluwatu day trip.</p>
+          <div class="mini-grid">
+            <div class="mini-box"><strong>Nights</strong>5 nights</div>
+            <div class="mini-box"><strong>Area</strong>Canggu / Kuta Utara</div>
+            <div class="mini-box"><strong>Setup</strong>2 bedrooms · 2 beds</div>
+            <div class="mini-box"><strong>Best for</strong>Beach + cafés + base</div>
+          </div>
+          <a class="btn btn-primary" style="margin-top:18px;" target="_blank" rel="noopener" href="https://www.airbnb.com/rooms/618441085075451959">Open Airbnb listing</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="itinerary" class="alt">
+    <div class="container">
+      <div class="section-title"><div class="eyebrow">Itinerary</div><h2>Day-by-day plan</h2><p>Built around your confirmed flights, with flexible activities until bookings are confirmed.</p></div>
+      <div class="filters" id="filters"></div>
+      <div class="grid-3" id="itineraryGrid"></div>
+    </div>
+  </section>
+
+  <section>
+    <div class="container">
+      <div class="section-title"><div class="eyebrow">Activities</div><h2>Best activities to consider</h2><p>Activity ideas are now grouped by stay zone, so you avoid wasting time crossing Bali back and forth during the same day.</p></div>
+      <div class="grid-3">
+        <div class="card"><div class="card-icon">🌴</div><h3>Ubud zone</h3><p><strong>Best for:</strong> 20–21 May</p><p>Rice terraces, Ubud cafés, Campuhan Ridge Walk, Ubud Market, Ubud Palace, Goa Gajah, Tegenungan Waterfall, and spa recovery.</p></div>
+        <div class="card"><div class="card-icon">🌊</div><h3>Canggu base zone</h3><p><strong>Best for:</strong> 22–27 May</p><p>Batu Bolong, Berawa, Echo Beach, Pererenan, cafés, surf lesson, gym, beach club, sunset, and Canggu dinners.</p></div>
+        <div class="card"><div class="card-icon">🍽️</div><h3>Seminyak / Umalas nearby</h3><p><strong>Best for:</strong> 24 May</p><p>Easy day from Canggu for brunch, shopping, beach clubs, restaurants, and a more polished dinner scene.</p></div>
+        <div class="card"><div class="card-icon">☀️</div><h3>Uluwatu day trip</h3><p><strong>Best for:</strong> 25 May</p><p>One dedicated long day trip from Canggu for Padang-Padang, Bingin, Suluban, Uluwatu Temple, sunset, and dinner.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="alt">
+    <div class="container grid-2">
+      <div>
+        <div class="section-title"><div class="eyebrow">Checklist</div><h2>Before you fly</h2><p>Updated with flight and booking reminders.</p></div>
+        <div class="card"><div class="mini-grid" id="checklist"></div></div>
+      </div>
+      <div>
+        <div class="section-title"><div class="eyebrow">Budget</div><h2>Budget tracker</h2><p>Ground budget excludes confirmed flight ticket cost.</p></div>
+        <div class="card">
+          <div class="budget-main"><div class="small">Target Bali budget</div><div class="big">3,000–4,000 SAR</div><p>Per person for the Bali stay, excluding flights.</p></div>
+          <div class="cost-row"><strong>Confirmed flights</strong><span>4,133 SAR per person</span></div>
+          <div class="cost-row"><strong>Bali ground budget</strong><span>3,000–4,000 SAR per person</span></div>
+          <div class="cost-row"><strong>Airbnb</strong><span>TBD — choose within budget</span></div>
+          <div class="cost-row"><strong>Food & cafés</strong><span>Daily budget from ground budget</span></div>
+          <div class="cost-row"><strong>Activities</strong><span>Prioritize Ubud, Uluwatu, Nusa Penida</span></div>
+          <div class="cost-row"><strong>Transport</strong><span>Drivers, transfers, fast boat if needed</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="final">
+    <div class="container final-box">
+      <div>
+        <div class="eyebrow">Final note</div>
+        <h2>Ready for Bali, Aziz & Suliman?</h2>
+        <p>Flights are confirmed and the villa route is now simpler: Ubud from 20–22 May, then Canggu from 22–27 May. Uluwatu becomes one dedicated day trip from Canggu.</p>
+      </div>
+      <div class="summary-card">
+        <h3 style="color:white;">🧳 Trip summary</h3>
+        <p>Aziz and Suliman depart Riyadh on 19 May 2026, arrive in Bali on 20 May 2026, stay 2 nights in Ubud and 5 nights in Canggu, leave Bali on 27 May 2026, and arrive back in Riyadh on 28 May 2026.</p>
+        <div class="tags"><span class="tag">Confirmed flights</span><span class="tag">2 selected villas</span><span class="tag">3,000–4,000 SAR budget</span><span class="tag">Ubud</span><span class="tag">Nusa Penida</span><span class="tag">Uluwatu day trip</span></div>
+      </div>
+    </div>
+  </section>
+
+  <script>
+    const itinerary = [
+      {
+        day:"Day 1",
+        date:"Tue, 19 May",
+        title:"Riyadh to Abu Dhabi to Bali",
+        location:"RUH → AUH → DPS",
+        vibe:"Travel day",
+        icon:"✈️",
+        plan:[
+          "Depart Riyadh on SV 572 at 11:15 from Terminal 2 and arrive Abu Dhabi at 14:05.",
+          "Use the Abu Dhabi connection for food, walking, charging devices, and preparing for the Bali flight.",
+          "Depart Abu Dhabi on EY 476 at 21:50 toward Bali."
+        ]
+      },
+      {
+        day:"Day 2",
+        date:"Wed, 20 May",
+        title:"Arrive in Bali & Transfer to Ubud",
+        location:"DPS → Ubud Centre",
+        vibe:"Ubud arrival",
+        icon:"🏨",
+        plan:[
+          "Arrive at Ngurah Rai Airport in Bali at 11:25.",
+          "Take a private airport transfer directly to Private Pool-Villa 2 Bedroom In Ubud Centre.",
+          "Stay in Ubud zone only: check in, relax at the villa, walk around Ubud Centre, and have dinner nearby."
+        ]
+      },
+      {
+        day:"Day 3",
+        date:"Thu, 21 May",
+        title:"Ubud Nature, Culture & Spa Day",
+        location:"Ubud Zone",
+        vibe:"Ubud only",
+        icon:"🌴",
+        plan:[
+          "Keep the full day inside the Ubud zone.",
+          "Suggested plan: Tegallalang Rice Terrace, Ubud Market, Ubud Palace, Campuhan Ridge Walk, or Goa Gajah.",
+          "End with a massage or spa session, then dinner around Ubud Centre."
+        ]
+      },
+      {
+        day:"Day 4",
+        date:"Fri, 22 May",
+        title:"Transfer to Canggu & Settle In",
+        location:"Ubud → Canggu",
+        vibe:"Canggu arrival",
+        icon:"🌊",
+        plan:[
+          "Check out from the Ubud villa and transfer to Sweet Canggu Escape with 2 Motorcycles.",
+          "After check-in, stay in the Canggu zone: café lunch, beach walk, villa pool time, and sunset nearby.",
+          "Evening in Canggu only: dinner around Batu Bolong, Berawa, Pererenan, or Echo Beach."
+        ]
+      },
+      {
+        day:"Day 5",
+        date:"Sat, 23 May",
+        title:"Canggu Beach, Cafés & Surf",
+        location:"Canggu Zone",
+        vibe:"Beach + cafés",
+        icon:"🌊",
+        plan:[
+          "Stay within Canggu, Berawa, Batu Bolong, Echo Beach, and Pererenan.",
+          "Choose a surf lesson, café hopping, gym session, beach club, or relaxed beach day.",
+          "Finish with sunset and dinner in Canggu."
+        ]
+      },
+      {
+        day:"Day 6",
+        date:"Sun, 24 May",
+        title:"Seminyak & Umalas Day From Canggu",
+        location:"Canggu / Seminyak / Umalas",
+        vibe:"Nearby south-west coast",
+        icon:"🍽️",
+        plan:[
+          "Use Canggu as your base and stay in the nearby Seminyak/Umalas zone for the day.",
+          "Suggested plan: brunch in Umalas, shopping or beach club in Seminyak, then dinner nearby.",
+          "Avoid going far across Bali today; keep it focused on the Canggu-Seminyak-Umalas area."
+        ]
+      },
+      {
+        day:"Day 7",
+        date:"Mon, 25 May",
+        title:"Dedicated Uluwatu Day Trip",
+        location:"Canggu → Uluwatu → Canggu",
+        vibe:"Cliffs + sunset",
+        icon:"☀️",
+        plan:[
+          "This is the one planned long day trip from Canggu, so leave early to avoid wasting the day in traffic.",
+          "Suggested Uluwatu-only route: Padang-Padang Beach, Bingin or Suluban, cliff viewpoint, and Uluwatu Temple.",
+          "Stay in Uluwatu through sunset and dinner, then return to Canggu after traffic eases."
+        ]
+      },
+      {
+        day:"Day 8",
+        date:"Tue, 26 May",
+        title:"Final Full Day in Canggu",
+        location:"Canggu Zone",
+        vibe:"Flexible final day",
+        icon:"✨",
+        plan:[
+          "Keep the final full day easy and close to your Canggu villa.",
+          "Choose beach club, spa, shopping, cafés, laundry, packing, and final sunset in Canggu or Pererenan.",
+          "Final dinner in Canggu before departure day."
+        ]
+      },
+      {
+        day:"Day 9",
+        date:"Wed, 27 May",
+        title:"Canggu Morning & Departure",
+        location:"Canggu → DPS → AUH",
+        vibe:"Return begins",
+        icon:"✈️",
+        plan:[
+          "Check out from Sweet Canggu Escape and keep luggage ready.",
+          "Stay near Canggu only in the morning: breakfast, short beach walk, or final café stop.",
+          "Transfer to DPS airport and depart Bali on EY 477 at 18:45, arriving Abu Dhabi at 23:40."
+        ]
+      },
+      {
+        day:"Day 10",
+        date:"Thu, 28 May",
+        title:"Arrive Back in Riyadh",
+        location:"AUH → RUH",
+        vibe:"Home",
+        icon:"✈️",
+        plan:[
+          "Depart Abu Dhabi on EY 551 at 02:00.",
+          "Arrive Riyadh at 02:45 at Terminal 5.",
+          "Rest, unpack, and back up all Bali photos and videos."
+        ]
+      }
+    ];
+
+    const checklist = [
+      "Passport valid for at least 6 months", "Check Indonesia entry requirements before flying", "Airbnb booking confirmation", "Private airport transfer from DPS", "Travel insurance", "International card + some cash", "Light clothes and swimwear", "Universal adapter", "Sunscreen and sunglasses", "Download Etihad app for flight updates", "Book Nusa Penida only after checking weather/sea conditions", "Keep flight booking reference H6SQC7 saved offline"
+    ];
+
+    const filters = document.getElementById("filters");
+    const grid = document.getElementById("itineraryGrid");
+    const checklistGrid = document.getElementById("checklist");
+
+    function renderFilters(active = "All") {
+      const days = ["All", ...itinerary.map(item => item.day)];
+      filters.innerHTML = days.map(day => `<button class="filter-btn ${day === active ? "active" : ""}" data-day="${day}">${day}</button>`).join("");
+      document.querySelectorAll(".filter-btn").forEach(button => {
+        button.addEventListener("click", () => {
+          renderFilters(button.dataset.day);
+          renderItinerary(button.dataset.day);
+        });
+      });
+    }
+
+    function renderItinerary(active = "All") {
+      const items = active === "All" ? itinerary : itinerary.filter(item => item.day === active);
+      grid.innerHTML = items.map(item => `
+        <article class="card day-card">
+          <div class="day-head">
+            <div>
+              <div class="day-label">${item.day}</div>
+              <h3>${item.title}</h3>
+              <div class="day-location">${item.date} · ${item.location}</div>
+            </div>
+            <div class="day-emoji">${item.icon}</div>
+          </div>
+          <div class="vibe">${item.vibe}</div>
+          <ul>${item.plan.map(point => `<li><span>✅</span><span>${point}</span></li>`).join("")}</ul>
+        </article>
+      `).join("");
+    }
+
+    function renderChecklist() {
+      checklistGrid.innerHTML = checklist.map(item => `<div class="mini-box"><strong>✅</strong>${item}</div>`).join("");
+    }
+
+    function updateCountdown() {
+      const departureTime = new Date("2026-05-19T11:15:00+03:00").getTime();
+      const now = new Date().getTime();
+      const distance = departureTime - now;
+
+      const daysEl = document.getElementById("days");
+      const hoursEl = document.getElementById("hours");
+      const minutesEl = document.getElementById("minutes");
+      const secondsEl = document.getElementById("seconds");
+      const messageEl = document.getElementById("countdownMessage");
+
+      if (!daysEl || !hoursEl || !minutesEl || !secondsEl || !messageEl) return;
+
+      if (distance <= 0) {
+        daysEl.textContent = "0";
+        hoursEl.textContent = "0";
+        minutesEl.textContent = "0";
+        secondsEl.textContent = "0";
+        messageEl.textContent = "The Riyadh departure time has passed. Have an amazing Bali trip!";
+        return;
+      }
+
+      const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+      const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+      const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+      const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+      daysEl.textContent = days;
+      hoursEl.textContent = String(hours).padStart(2, "0");
+      minutesEl.textContent = String(minutes).padStart(2, "0");
+      secondsEl.textContent = String(seconds).padStart(2, "0");
+      messageEl.textContent = "Departure: 19 May 2026 at 11:15 AM Riyadh time";
+    }
+
+    renderFilters();
+    renderItinerary();
+    renderChecklist();
+    updateCountdown();
+    setInterval(updateCountdown, 1000);
+  </script>
+</body>
+</html>
 
