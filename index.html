@@ -586,13 +586,15 @@
 
     .todo-add-form {
       display: grid;
-      grid-template-columns: minmax(0, 1fr) auto;
+      grid-template-columns: minmax(0, 1.4fr) minmax(140px, .55fr) minmax(120px, .45fr) auto;
       gap: 10px;
       margin-bottom: 16px;
     }
 
     .todo-add-form input,
-    .todo-text-input {
+    .todo-text-input,
+    .todo-date-input,
+    .todo-time-input {
       width: 100%;
       min-width: 0;
       border: 1px solid var(--slate-200);
@@ -604,7 +606,9 @@
     }
 
     .todo-add-form input:focus,
-    .todo-text-input:focus {
+    .todo-text-input:focus,
+    .todo-date-input:focus,
+    .todo-time-input:focus {
       outline: 2px solid var(--teal-100);
       border-color: var(--teal-600);
     }
@@ -616,7 +620,7 @@
 
     .todo-item {
       display: grid;
-      grid-template-columns: auto minmax(0, 1fr) auto;
+      grid-template-columns: auto minmax(0, 1.4fr) minmax(140px, .45fr) minmax(120px, .35fr) auto;
       gap: 12px;
       align-items: center;
       padding: 14px;
@@ -665,6 +669,51 @@
     .todo-delete-btn:hover {
       background: var(--slate-950);
       color: #fff;
+    }
+
+    .todo-date-input,
+    .todo-time-input {
+      background: #fff;
+      font-weight: 750;
+    }
+
+    .todo-date-hint {
+      grid-column: 2 / -1;
+      color: var(--slate-500);
+      font-size: 12px;
+      font-weight: 750;
+    }
+
+    .dynamic-todos {
+      margin-top: 14px;
+      display: grid;
+      gap: 8px;
+    }
+
+    .dynamic-todo-title {
+      color: var(--slate-950);
+      font-size: 13px;
+      font-weight: 950;
+      text-transform: uppercase;
+      letter-spacing: .12em;
+      margin-top: 14px;
+    }
+
+    .dynamic-todo-item {
+      display: flex;
+      gap: 8px;
+      align-items: flex-start;
+      border-radius: 14px;
+      background: var(--amber-50);
+      padding: 10px;
+      color: var(--slate-700);
+      font-size: 13px;
+      line-height: 1.45;
+    }
+
+    .dynamic-todo-item.is-done {
+      opacity: .65;
+      text-decoration: line-through;
     }
 
     .remove-activity-btn {
@@ -854,6 +903,13 @@
       }
       .budget-actions .btn {
         width: auto;
+      }
+      .todo-add-form,
+      .todo-item {
+        grid-template-columns: 1fr;
+      }
+      .todo-date-hint {
+        grid-column: 1;
       }
       .cost-row { align-items: flex-start; flex-direction: column; }
       .cost-row span { text-align: left; }
@@ -1059,6 +1115,8 @@
         <div class="card todo-card">
           <form class="todo-add-form" id="todoAddForm">
             <input id="todoInput" type="text" placeholder="Add a new task, activity, booking note..." aria-label="Add a new to do item" />
+            <input id="todoDateInput" type="date" min="2026-05-19" max="2026-05-28" aria-label="Optional task date" />
+            <input id="todoTimeInput" type="time" aria-label="Optional task time" />
             <button class="btn btn-primary" type="submit">Add</button>
           </form>
           <div class="todo-list" id="checklist"></div>
@@ -1273,6 +1331,56 @@
     const grid = document.getElementById("itineraryGrid");
     const checklistGrid = document.getElementById("checklist");
 
+    const itineraryDateMap = {
+      "Tue, 19 May": "2026-05-19",
+      "Wed, 20 May": "2026-05-20",
+      "Thu, 21 May": "2026-05-21",
+      "Fri, 22 May": "2026-05-22",
+      "Sat, 23 May": "2026-05-23",
+      "Sun, 24 May": "2026-05-24",
+      "Mon, 25 May": "2026-05-25",
+      "Tue, 26 May": "2026-05-26",
+      "Wed, 27 May": "2026-05-27",
+      "Thu, 28 May": "2026-05-28"
+    };
+
+    function escapeHtml(value) {
+      return String(value || "")
+        .replace(/&/g, "&amp;")
+        .replace(/"/g, "&quot;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;");
+    }
+
+    function formatTodoDateTime(todo) {
+      if (!todo.date) return "";
+      const date = new Date(`${todo.date}T00:00:00`);
+      const formattedDate = date.toLocaleDateString("en-US", { weekday: "short", month: "short", day: "numeric" });
+      return todo.time ? `${formattedDate} at ${todo.time}` : formattedDate;
+    }
+
+    function renderTodosForItineraryDate(displayDate) {
+      const isoDate = itineraryDateMap[displayDate];
+      if (!isoDate) return "";
+      const todos = getTodos()
+        .filter(todo => todo.date === isoDate)
+        .sort((a, b) => (a.time || "99:99").localeCompare(b.time || "99:99"));
+
+      if (!todos.length) return "";
+
+      return `
+        <div class="dynamic-todos">
+          <div class="dynamic-todo-title">Scheduled To Do</div>
+          ${todos.map(todo => `
+            <div class="dynamic-todo-item ${todo.done ? "is-done" : ""}">
+              <span>${todo.done ? "✅" : "📝"}</span>
+              <span>${todo.time ? `<strong>${todo.time}</strong> · ` : ""}${escapeHtml(todo.text)}</span>
+            </div>
+          `).join("")}
+        </div>
+      `;
+    }
+
     function renderFilters(active = "All") {
       const days = ["All", ...itinerary.map(item => item.day)];
       filters.innerHTML = days.map(day => `<button class="filter-btn ${day === active ? "active" : ""}" data-day="${day}">${day}</button>`).join("");
@@ -1298,6 +1406,7 @@
           </div>
           <div class="vibe">${item.vibe}</div>
           <ul>${item.plan.map(point => `<li><span>✅</span><span>${point}</span></li>`).join("")}</ul>
+          ${renderTodosForItineraryDate(item.date)}
         </article>
       `).join("");
     }
@@ -1317,11 +1426,13 @@
       "Keep flight booking reference H6SQC7 saved offline"
     ];
 
-    function createTodo(text, done = false) {
+    function createTodo(text, done = false, date = "", time = "") {
       return {
         id: `todo-${Date.now()}-${Math.random().toString(16).slice(2)}`,
         text,
-        done
+        done,
+        date,
+        time
       };
     }
 
@@ -1335,7 +1446,9 @@
         return parsed.map(item => ({
           id: item.id || `todo-${Date.now()}-${Math.random().toString(16).slice(2)}`,
           text: item.text || "Untitled task",
-          done: Boolean(item.done)
+          done: Boolean(item.done),
+          date: item.date || "",
+          time: item.time || ""
         }));
       } catch (error) {
         return defaultTodos.map(text => createTodo(text));
@@ -1351,8 +1464,11 @@
       checklistGrid.innerHTML = todos.map(todo => `
         <div class="todo-item ${todo.done ? "is-done" : ""}" data-id="${todo.id}">
           <input class="todo-checkbox" type="checkbox" ${todo.done ? "checked" : ""} aria-label="Mark task complete" />
-          <input class="todo-text-input" type="text" value="${todo.text.replace(/&/g, "&amp;").replace(/"/g, "&quot;").replace(/</g, "&lt;").replace(/>/g, "&gt;")}" aria-label="Edit task" />
+          <input class="todo-text-input" type="text" value="${escapeHtml(todo.text)}" aria-label="Edit task" />
+          <input class="todo-date-input" type="date" min="2026-05-19" max="2026-05-28" value="${todo.date || ""}" aria-label="Edit task date" />
+          <input class="todo-time-input" type="time" value="${todo.time || ""}" aria-label="Edit task time" />
           <button class="todo-delete-btn" type="button">Remove</button>
+          <div class="todo-date-hint">${formatTodoDateTime(todo) || "No date set — add a date to show this task in the itinerary."}</div>
         </div>
       `).join("");
 
@@ -1360,23 +1476,42 @@
         const id = item.dataset.id;
         const checkbox = item.querySelector(".todo-checkbox");
         const input = item.querySelector(".todo-text-input");
+        const dateInput = item.querySelector(".todo-date-input");
+        const timeInput = item.querySelector(".todo-time-input");
         const deleteBtn = item.querySelector(".todo-delete-btn");
 
         checkbox.addEventListener("change", () => {
           const updated = getTodos().map(todo => todo.id === id ? { ...todo, done: checkbox.checked } : todo);
           saveTodos(updated);
           item.classList.toggle("is-done", checkbox.checked);
+          renderItinerary(document.querySelector(".filter-btn.active")?.dataset.day || "All");
         });
 
         input.addEventListener("input", () => {
           const updated = getTodos().map(todo => todo.id === id ? { ...todo, text: input.value } : todo);
           saveTodos(updated);
+          renderItinerary(document.querySelector(".filter-btn.active")?.dataset.day || "All");
+        });
+
+        dateInput.addEventListener("change", () => {
+          const updated = getTodos().map(todo => todo.id === id ? { ...todo, date: dateInput.value } : todo);
+          saveTodos(updated);
+          renderChecklist();
+          renderItinerary(document.querySelector(".filter-btn.active")?.dataset.day || "All");
+        });
+
+        timeInput.addEventListener("change", () => {
+          const updated = getTodos().map(todo => todo.id === id ? { ...todo, time: timeInput.value } : todo);
+          saveTodos(updated);
+          renderChecklist();
+          renderItinerary(document.querySelector(".filter-btn.active")?.dataset.day || "All");
         });
 
         deleteBtn.addEventListener("click", () => {
           const updated = getTodos().filter(todo => todo.id !== id);
           saveTodos(updated);
           renderChecklist();
+          renderItinerary(document.querySelector(".filter-btn.active")?.dataset.day || "All");
         });
       });
     }
@@ -1384,13 +1519,17 @@
     document.getElementById("todoAddForm")?.addEventListener("submit", event => {
       event.preventDefault();
       const input = document.getElementById("todoInput");
+      const dateInput = document.getElementById("todoDateInput");
+      const timeInput = document.getElementById("todoTimeInput");
       const text = input.value.trim();
       if (!text) return;
-      const updated = [...getTodos(), createTodo(text)];
+      const updated = [...getTodos(), createTodo(text, false, dateInput.value, timeInput.value)];
       saveTodos(updated);
       input.value = "";
+      dateInput.value = "";
+      timeInput.value = "";
       renderChecklist();
-    });
+      renderItinerary(document.querySelector(".filter-btn.active")?.dataset.day || "All");
 
     function getSavedActivities() {
       try {
