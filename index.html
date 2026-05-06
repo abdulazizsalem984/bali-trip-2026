@@ -439,6 +439,26 @@
       border-color: var(--teal-600);
     }
 
+    .budget-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      align-items: center;
+      margin: 0 0 16px;
+    }
+
+    .budget-actions .btn-secondary {
+      color: var(--slate-900);
+      background: var(--slate-100);
+      border-color: var(--slate-200);
+    }
+
+    .save-status {
+      color: var(--slate-500);
+      font-size: 14px;
+      font-weight: 750;
+    }
+
     .final {
       padding-bottom: 76px;
     }
@@ -518,7 +538,7 @@
         <div class="info-pill"><div class="icon">📍</div><div><div class="info-label">Route</div><div class="info-value">Riyadh → Bali</div></div></div>
         <div class="info-pill"><div class="icon">📅</div><div><div class="info-label">Trip window</div><div class="info-value">19–28 May 2026</div></div></div>
         <div class="info-pill"><div class="icon">⏰</div><div><div class="info-label">Bali stay</div><div class="info-value">7 nights in Bali</div></div></div>
-        <div class="info-pill"><div class="icon">💳</div><div><div class="info-label">Budget</div><div class="info-value">3,000–4,000 SAR / person</div></div></div>
+        <div class="info-pill"><div class="icon">💳</div><div><div class="info-label">Budget</div><div class="info-value">7,000 SAR total · 3,500 each</div></div></div>
       </div>
     </div>
   </header>
@@ -685,45 +705,50 @@
       <div>
         <div class="section-title"><div class="eyebrow">Budget</div><h2>Budget tracker</h2><p>Ground budget excludes confirmed flight ticket cost.</p></div>
         <div class="card">
-          <div class="budget-main"><div class="small">Total Bali budget</div><div class="big">3,500 SAR</div><p>Per person. Includes villas, transportation, activities, food, cafés, and miscellaneous costs. Flights are separate.</p></div>
+          <div class="budget-main"><div class="small">Total Bali budget</div><div class="big">7,000 SAR</div><p>Total for Aziz and Suliman together. Each person pays 3,500 SAR. Includes villas, transportation, activities, food, cafés, and miscellaneous costs. Flights are separate.</p></div>
+          <div class="budget-actions">
+            <button class="btn btn-primary" type="button" id="saveBudgetBtn">Save Budget</button>
+            <button class="btn btn-secondary" type="button" id="clearBudgetBtn">Clear Saved Amounts</button>
+            <span id="saveStatus" class="save-status">Not saved yet</span>
+          </div>
           <div class="budget-table-wrap">
-            <table class="budget-table" aria-label="Budget tracker per person">
+            <table class="budget-table" aria-label="Budget tracker for both travelers">
               <thead>
                 <tr>
                   <th>Category</th>
-                  <th>Planned SAR / person</th>
-                  <th>Actual SAR / person</th>
+                  <th>Planned SAR total</th>
+                  <th>Paid / Actual SAR total</th>
                   <th>Notes</th>
                 </tr>
               </thead>
               <tbody>
                 <tr>
                   <td>Villas / accommodation</td>
-                  <td>1,400</td>
+                  <td>2,800</td>
                   <td><input class="budget-input" type="number" min="0" value="0" data-category="Accommodation" /></td>
                   <td>Ubud 2 nights + Canggu 5 nights</td>
                 </tr>
                 <tr>
                   <td>Transportation</td>
-                  <td>450</td>
+                  <td>900</td>
                   <td><input class="budget-input" type="number" min="0" value="0" data-category="Transportation" /></td>
                   <td>Airport transfers, drivers, scooters, day trip transport</td>
                 </tr>
                 <tr>
                   <td>Activities</td>
-                  <td>650</td>
+                  <td>1,300</td>
                   <td><input class="budget-input" type="number" min="0" value="0" data-category="Activities" /></td>
                   <td>Ubud activities, Uluwatu day trip, beach clubs, spa</td>
                 </tr>
                 <tr>
                   <td>Food & cafés</td>
-                  <td>750</td>
+                  <td>1,500</td>
                   <td><input class="budget-input" type="number" min="0" value="0" data-category="Food" /></td>
                   <td>Meals, cafés, snacks, final dinner</td>
                 </tr>
                 <tr>
                   <td>Shopping / emergency</td>
-                  <td>250</td>
+                  <td>500</td>
                   <td><input class="budget-input" type="number" min="0" value="0" data-category="Misc" /></td>
                   <td>Souvenirs, laundry, SIM/eSIM, small extras</td>
                 </tr>
@@ -731,14 +756,14 @@
               <tfoot>
                 <tr>
                   <td>Total</td>
-                  <td>3,500</td>
+                  <td>7,000</td>
                   <td id="actualTotal">0</td>
-                  <td id="budgetStatus">Remaining: 3,500 SAR</td>
+                  <td id="budgetStatus">Remaining: 7,000 SAR</td>
                 </tr>
               </tfoot>
             </table>
           </div>
-          <p class="muted" style="margin-top:14px;">Tip: Fill the “Actual” column as you confirm prices. The total and remaining amount update automatically on your browser.</p>
+          <p class="muted" style="margin-top:14px;">Tip: Fill the “Paid / Actual” column as you confirm prices, then click “Save Budget.” Saved amounts stay in this browser after refreshing the page.</p>
         </div>
       </div>
     </div>
@@ -969,7 +994,7 @@
     }
 
     function updateBudgetTracker() {
-      const maxBudget = 3500;
+      const maxBudget = 7000;
       const inputs = document.querySelectorAll(".budget-input");
       let total = 0;
 
@@ -989,14 +1014,62 @@
         : `Over budget: ${Math.abs(remaining).toLocaleString("en-US")} SAR`;
     }
 
+    function saveBudgetTracker() {
+      const data = {};
+      document.querySelectorAll(".budget-input").forEach(input => {
+        data[input.dataset.category] = input.value || "0";
+      });
+      localStorage.setItem("baliTripBudgetTracker", JSON.stringify(data));
+
+      const saveStatus = document.getElementById("saveStatus");
+      if (saveStatus) {
+        const now = new Date();
+        saveStatus.textContent = `Saved at ${now.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}`;
+      }
+    }
+
+    function loadBudgetTracker() {
+      const saved = localStorage.getItem("baliTripBudgetTracker");
+      if (!saved) return;
+
+      try {
+        const data = JSON.parse(saved);
+        document.querySelectorAll(".budget-input").forEach(input => {
+          if (Object.prototype.hasOwnProperty.call(data, input.dataset.category)) {
+            input.value = data[input.dataset.category];
+          }
+        });
+
+        const saveStatus = document.getElementById("saveStatus");
+        if (saveStatus) saveStatus.textContent = "Loaded saved amounts";
+      } catch (error) {
+        console.warn("Could not load saved budget data", error);
+      }
+    }
+
+    function clearBudgetTracker() {
+      localStorage.removeItem("baliTripBudgetTracker");
+      document.querySelectorAll(".budget-input").forEach(input => {
+        input.value = "0";
+      });
+      updateBudgetTracker();
+
+      const saveStatus = document.getElementById("saveStatus");
+      if (saveStatus) saveStatus.textContent = "Saved amounts cleared";
+    }
+
     document.querySelectorAll(".budget-input").forEach(input => {
       input.addEventListener("input", updateBudgetTracker);
     });
+
+    document.getElementById("saveBudgetBtn")?.addEventListener("click", saveBudgetTracker);
+    document.getElementById("clearBudgetBtn")?.addEventListener("click", clearBudgetTracker);
 
     renderFilters();
     renderItinerary();
     renderChecklist();
     updateCountdown();
+    loadBudgetTracker();
     updateBudgetTracker();
     setInterval(updateCountdown, 1000);
   </script>
