@@ -1113,12 +1113,12 @@
       <div>
         <div class="section-title"><div class="eyebrow">Checklist</div><h2>To Do List</h2><p>Add, edit, remove, check, and uncheck trip tasks. Your changes save automatically on this device.</p></div>
         <div class="card todo-card">
-          <form class="todo-add-form" id="todoAddForm">
+          <div class="todo-add-form" id="todoAddForm">
             <input id="todoInput" type="text" placeholder="Add a new task, activity, booking note..." aria-label="Add a new to do item" />
             <input id="todoDateInput" type="date" min="2026-05-19" max="2026-05-28" aria-label="Optional task date" />
             <input id="todoTimeInput" type="time" aria-label="Optional task time" />
-            <button class="btn btn-primary" type="submit">Add</button>
-          </form>
+            <button class="btn btn-primary" type="button" id="todoAddButton">Add</button>
+          </div>
           <div class="todo-list" id="checklist"></div>
         </div>
       </div>
@@ -1190,408 +1190,414 @@
   </section>
 
   <script>
-    (function () {
-      const itinerary = [
-        {day:"Day 1", date:"Tue, 19 May", title:"Riyadh to Abu Dhabi to Bali", location:"RUH → AUH → DPS", vibe:"Travel day", icon:"✈️", plan:["Depart Riyadh on SV 572 at 11:15 from Terminal 2 and arrive Abu Dhabi at 14:05.","Use the Abu Dhabi connection for food, walking, charging devices, and preparing for the Bali flight.","Depart Abu Dhabi on EY 476 at 21:50 toward Bali."]},
-        {day:"Day 2", date:"Wed, 20 May", title:"Arrive in Bali & Transfer to Ubud", location:"DPS → Ubud Centre", vibe:"Ubud arrival", icon:"🏨", plan:["Arrive at Ngurah Rai Airport in Bali at 11:25.","Take a private airport transfer directly to Elegant 2Br Villa near Ubud Center.","Stay in Ubud zone only: check in, relax at the villa, walk around Ubud Centre, and have dinner nearby."]},
-        {day:"Day 3", date:"Thu, 21 May", title:"Ubud Nature, Culture & Spa Day", location:"Ubud Zone", vibe:"Ubud only", icon:"🌴", plan:["Keep the full day inside the Ubud zone.","Suggested plan: Tegallalang Rice Terrace, Ubud Market, Ubud Palace, Campuhan Ridge Walk, or Goa Gajah.","End with a massage or spa session, then dinner around Ubud Centre."]},
-        {day:"Day 4", date:"Fri, 22 May", title:"Transfer to Canggu & Settle In", location:"Ubud → Canggu", vibe:"Canggu arrival", icon:"🌊", plan:["Check out from the Ubud villa and transfer to Villa Kita 1 Canggu | Summerhouse Bali.","After check-in, stay in the Canggu zone: café lunch, beach walk, villa pool time, and sunset nearby.","Evening in Canggu only: dinner around Batu Bolong, Berawa, Pererenan, or Echo Beach."]},
-        {day:"Day 5", date:"Sat, 23 May", title:"Canggu Beach, Cafés & Surf", location:"Canggu Zone", vibe:"Beach + cafés", icon:"🌊", plan:["Stay within Canggu, Berawa, Batu Bolong, Echo Beach, and Pererenan.","Choose a surf lesson, café hopping, gym session, beach club, or relaxed beach day.","Finish with sunset and dinner in Canggu."]},
-        {day:"Day 6", date:"Sun, 24 May", title:"Seminyak & Umalas Day From Canggu", location:"Canggu / Seminyak / Umalas", vibe:"Nearby south-west coast", icon:"🍽️", plan:["Use Canggu as your base and stay in the nearby Seminyak/Umalas zone for the day.","Suggested plan: brunch in Umalas, shopping or beach club in Seminyak, then dinner nearby.","Avoid going far across Bali today; keep it focused on the Canggu-Seminyak-Umalas area."]},
-        {day:"Day 7", date:"Mon, 25 May", title:"Dedicated Uluwatu Day Trip", location:"Canggu → Uluwatu → Canggu", vibe:"Cliffs + sunset", icon:"☀️", plan:["This is the one planned long day trip from Canggu, so leave early to avoid wasting the day in traffic.","Suggested Uluwatu-only route: Padang-Padang Beach, Bingin or Suluban, cliff viewpoint, and Uluwatu Temple.","Stay in Uluwatu through sunset and dinner, then return to Canggu after traffic eases."]},
-        {day:"Day 8", date:"Tue, 26 May", title:"Final Full Day in Canggu", location:"Canggu Zone", vibe:"Flexible final day", icon:"✨", plan:["Keep the final full day easy and close to your Canggu villa.","Choose beach club, spa, shopping, cafés, laundry, packing, and final sunset in Canggu or Pererenan.","Final dinner in Canggu before departure day."]},
-        {day:"Day 9", date:"Wed, 27 May", title:"Canggu Morning & Departure", location:"Canggu → DPS → AUH", vibe:"Return begins", icon:"✈️", plan:["Check out from Villa Kita 1 Canggu | Summerhouse Bali and keep luggage ready.","Stay near Canggu only in the morning: breakfast, short beach walk, or final café stop.","Transfer to DPS airport and depart Bali on EY 477 at 18:45, arriving Abu Dhabi at 23:40."]},
-        {day:"Day 10", date:"Thu, 28 May", title:"Arrive Back in Riyadh", location:"AUH → RUH", vibe:"Home", icon:"✈️", plan:["Depart Abu Dhabi on EY 551 at 02:00.","Arrive Riyadh at 02:45 at Terminal 5.","Rest, unpack, and back up all Bali photos and videos."]}
-      ];
+(function () {
+  "use strict";
 
-      const defaultTodos = [
-        "Passport valid for at least 6 months",
-        "Check Indonesia entry requirements before flying",
-        "Airbnb booking confirmation",
-        "Private airport transfer from DPS",
-        "Travel insurance",
-        "International card + some cash",
-        "Light clothes and swimwear",
-        "Universal adapter",
-        "Sunscreen and sunglasses",
-        "Download Etihad app for flight updates",
-        "Keep flight booking reference H6SQC7 saved offline"
-      ];
+  var itinerary = [
+    {day:"Day 1", date:"Tue, 19 May", title:"Riyadh to Abu Dhabi to Bali", location:"RUH → AUH → DPS", vibe:"Travel day", icon:"✈️", plan:["Depart Riyadh on SV 572 at 11:15 from Terminal 2 and arrive Abu Dhabi at 14:05.","Use the Abu Dhabi connection for food, walking, charging devices, and preparing for the Bali flight.","Depart Abu Dhabi on EY 476 at 21:50 toward Bali."]},
+    {day:"Day 2", date:"Wed, 20 May", title:"Arrive in Bali & Transfer to Ubud", location:"DPS → Ubud Centre", vibe:"Ubud arrival", icon:"🏨", plan:["Arrive at Ngurah Rai Airport in Bali at 11:25.","Take a private airport transfer directly to Elegant 2Br Villa near Ubud Center.","Stay in Ubud zone only: check in, relax at the villa, walk around Ubud Centre, and have dinner nearby."]},
+    {day:"Day 3", date:"Thu, 21 May", title:"Ubud Nature, Culture & Spa Day", location:"Ubud Zone", vibe:"Ubud only", icon:"🌴", plan:["Keep the full day inside the Ubud zone.","Suggested plan: Tegallalang Rice Terrace, Ubud Market, Ubud Palace, Campuhan Ridge Walk, or Goa Gajah.","End with a massage or spa session, then dinner around Ubud Centre."]},
+    {day:"Day 4", date:"Fri, 22 May", title:"Transfer to Canggu & Settle In", location:"Ubud → Canggu", vibe:"Canggu arrival", icon:"🌊", plan:["Check out from the Ubud villa and transfer to Villa Kita 1 Canggu | Summerhouse Bali.","After check-in, stay in the Canggu zone: café lunch, beach walk, villa pool time, and sunset nearby.","Evening in Canggu only: dinner around Batu Bolong, Berawa, Pererenan, or Echo Beach."]},
+    {day:"Day 5", date:"Sat, 23 May", title:"Canggu Beach, Cafés & Surf", location:"Canggu Zone", vibe:"Beach + cafés", icon:"🌊", plan:["Stay within Canggu, Berawa, Batu Bolong, Echo Beach, and Pererenan.","Choose a surf lesson, café hopping, gym session, beach club, or relaxed beach day.","Finish with sunset and dinner in Canggu."]},
+    {day:"Day 6", date:"Sun, 24 May", title:"Seminyak & Umalas Day From Canggu", location:"Canggu / Seminyak / Umalas", vibe:"Nearby south-west coast", icon:"🍽️", plan:["Use Canggu as your base and stay in the nearby Seminyak/Umalas zone for the day.","Suggested plan: brunch in Umalas, shopping or beach club in Seminyak, then dinner nearby.","Avoid going far across Bali today; keep it focused on the Canggu-Seminyak-Umalas area."]},
+    {day:"Day 7", date:"Mon, 25 May", title:"Dedicated Uluwatu Day Trip", location:"Canggu → Uluwatu → Canggu", vibe:"Cliffs + sunset", icon:"☀️", plan:["This is the one planned long day trip from Canggu, so leave early to avoid wasting the day in traffic.","Suggested Uluwatu-only route: Padang-Padang Beach, Bingin or Suluban, cliff viewpoint, and Uluwatu Temple.","Stay in Uluwatu through sunset and dinner, then return to Canggu after traffic eases."]},
+    {day:"Day 8", date:"Tue, 26 May", title:"Final Full Day in Canggu", location:"Canggu Zone", vibe:"Flexible final day", icon:"✨", plan:["Keep the final full day easy and close to your Canggu villa.","Choose beach club, spa, shopping, cafés, laundry, packing, and final sunset in Canggu or Pererenan.","Final dinner in Canggu before departure day."]},
+    {day:"Day 9", date:"Wed, 27 May", title:"Canggu Morning & Departure", location:"Canggu → DPS → AUH", vibe:"Return begins", icon:"✈️", plan:["Check out from Villa Kita 1 Canggu | Summerhouse Bali and keep luggage ready.","Stay near Canggu only in the morning: breakfast, short beach walk, or final café stop.","Transfer to DPS airport and depart Bali on EY 477 at 18:45, arriving Abu Dhabi at 23:40."]},
+    {day:"Day 10", date:"Thu, 28 May", title:"Arrive Back in Riyadh", location:"AUH → RUH", vibe:"Home", icon:"✈️", plan:["Depart Abu Dhabi on EY 551 at 02:00.","Arrive Riyadh at 02:45 at Terminal 5.","Rest, unpack, and back up all Bali photos and videos."]}
+  ];
 
-      const itineraryDateMap = {
-        "Tue, 19 May": "2026-05-19",
-        "Wed, 20 May": "2026-05-20",
-        "Thu, 21 May": "2026-05-21",
-        "Fri, 22 May": "2026-05-22",
-        "Sat, 23 May": "2026-05-23",
-        "Sun, 24 May": "2026-05-24",
-        "Mon, 25 May": "2026-05-25",
-        "Tue, 26 May": "2026-05-26",
-        "Wed, 27 May": "2026-05-27",
-        "Thu, 28 May": "2026-05-28"
-      };
+  var defaultTodos = [
+    "Passport valid for at least 6 months",
+    "Check Indonesia entry requirements before flying",
+    "Airbnb booking confirmation",
+    "Private airport transfer from DPS",
+    "Travel insurance",
+    "International card + some cash",
+    "Light clothes and swimwear",
+    "Universal adapter",
+    "Sunscreen and sunglasses",
+    "Download Etihad app for flight updates",
+    "Keep flight booking reference H6SQC7 saved offline"
+  ];
 
-      const filters = document.getElementById("filters");
-      const grid = document.getElementById("itineraryGrid");
-      const checklistGrid = document.getElementById("checklist");
-      const todoForm = document.getElementById("todoAddForm");
-      const todoInput = document.getElementById("todoInput");
-      const todoDateInput = document.getElementById("todoDateInput");
-      const todoTimeInput = document.getElementById("todoTimeInput");
+  var itineraryDateMap = {
+    "Tue, 19 May": "2026-05-19",
+    "Wed, 20 May": "2026-05-20",
+    "Thu, 21 May": "2026-05-21",
+    "Fri, 22 May": "2026-05-22",
+    "Sat, 23 May": "2026-05-23",
+    "Sun, 24 May": "2026-05-24",
+    "Mon, 25 May": "2026-05-25",
+    "Tue, 26 May": "2026-05-26",
+    "Wed, 27 May": "2026-05-27",
+    "Thu, 28 May": "2026-05-28"
+  };
 
-      function escapeHtml(value) {
-        return String(value || "")
-          .replace(/&/g, "&amp;")
-          .replace(/"/g, "&quot;")
-          .replace(/</g, "&lt;")
-          .replace(/>/g, "&gt;");
-      }
+  function byId(id) { return document.getElementById(id); }
 
-      function createTodo(text, done = false, date = "", time = "") {
+  function escapeHtml(value) {
+    return String(value || "")
+      .replace(/&/g, "&amp;")
+      .replace(/"/g, "&quot;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;");
+  }
+
+  function createTodo(text, done, date, time) {
+    return {
+      id: "todo-" + Date.now() + "-" + Math.random().toString(16).slice(2),
+      text: text,
+      done: Boolean(done),
+      date: date || "",
+      time: time || ""
+    };
+  }
+
+  function saveTodos(todos) {
+    localStorage.setItem("baliTripTodos", JSON.stringify(todos));
+  }
+
+  function getTodos() {
+    var saved = localStorage.getItem("baliTripTodos");
+    if (!saved) {
+      var initial = defaultTodos.map(function (text) { return createTodo(text, false, "", ""); });
+      saveTodos(initial);
+      return initial;
+    }
+
+    try {
+      var parsed = JSON.parse(saved);
+      if (!Array.isArray(parsed)) throw new Error("Invalid todos");
+      return parsed.map(function (item) {
         return {
-          id: `todo-${Date.now()}-${Math.random().toString(16).slice(2)}`,
-          text,
-          done,
-          date,
-          time
+          id: item.id || createTodo("x").id,
+          text: item.text || "Untitled task",
+          done: Boolean(item.done),
+          date: item.date || "",
+          time: item.time || ""
         };
-      }
+      });
+    } catch (error) {
+      var fallback = defaultTodos.map(function (text) { return createTodo(text, false, "", ""); });
+      saveTodos(fallback);
+      return fallback;
+    }
+  }
 
-      function getTodos() {
-        const saved = localStorage.getItem("baliTripTodos");
-        if (!saved) {
-          const initialTodos = defaultTodos.map(text => createTodo(text));
-          saveTodos(initialTodos);
-          return initialTodos;
-        }
+  function activeDay() {
+    var active = document.querySelector(".filter-btn.active");
+    return active ? active.getAttribute("data-day") : "All";
+  }
 
-        try {
-          const parsed = JSON.parse(saved);
-          if (!Array.isArray(parsed)) throw new Error("Invalid todo data");
-          return parsed.map(item => ({
-            id: item.id || `todo-${Date.now()}-${Math.random().toString(16).slice(2)}`,
-            text: item.text || "Untitled task",
-            done: Boolean(item.done),
-            date: item.date || "",
-            time: item.time || ""
-          }));
-        } catch (error) {
-          const initialTodos = defaultTodos.map(text => createTodo(text));
-          saveTodos(initialTodos);
-          return initialTodos;
-        }
-      }
+  function formatTodoDateTime(todo) {
+    if (!todo.date) return "No date set — add a date to show this task in the itinerary.";
+    var date = new Date(todo.date + "T00:00:00");
+    var formattedDate = date.toLocaleDateString("en-US", { weekday: "short", month: "short", day: "numeric" });
+    return todo.time ? formattedDate + " at " + todo.time : formattedDate;
+  }
 
-      function saveTodos(todos) {
-        localStorage.setItem("baliTripTodos", JSON.stringify(todos));
-      }
+  function renderTodosForItineraryDate(displayDate) {
+    var isoDate = itineraryDateMap[displayDate];
+    if (!isoDate) return "";
 
-      function formatTodoDateTime(todo) {
-        if (!todo.date) return "";
-        const date = new Date(`${todo.date}T00:00:00`);
-        const formattedDate = date.toLocaleDateString("en-US", { weekday: "short", month: "short", day: "numeric" });
-        return todo.time ? `${formattedDate} at ${todo.time}` : formattedDate;
-      }
+    var todos = getTodos()
+      .filter(function (todo) { return todo.date === isoDate; })
+      .sort(function (a, b) { return (a.time || "99:99").localeCompare(b.time || "99:99"); });
 
-      function renderTodosForItineraryDate(displayDate) {
-        const isoDate = itineraryDateMap[displayDate];
-        if (!isoDate) return "";
+    if (!todos.length) return "";
 
-        const todos = getTodos()
-          .filter(todo => todo.date === isoDate)
-          .sort((a, b) => (a.time || "99:99").localeCompare(b.time || "99:99"));
+    return '<div class="dynamic-todos"><div class="dynamic-todo-title">Scheduled To Do</div>' +
+      todos.map(function (todo) {
+        return '<div class="dynamic-todo-item ' + (todo.done ? 'is-done' : '') + '">' +
+          '<span>' + (todo.done ? '✅' : '📝') + '</span>' +
+          '<span>' + (todo.time ? '<strong>' + escapeHtml(todo.time) + '</strong> · ' : '') + escapeHtml(todo.text) + '</span>' +
+        '</div>';
+      }).join("") +
+    '</div>';
+  }
 
-        if (!todos.length) return "";
+  function renderFilters(selectedDay) {
+    var filters = byId("filters");
+    if (!filters) return;
+    var days = ["All"].concat(itinerary.map(function (item) { return item.day; }));
+    filters.innerHTML = days.map(function (day) {
+      return '<button class="filter-btn ' + (day === selectedDay ? 'active' : '') + '" data-day="' + day + '" type="button">' + day + '</button>';
+    }).join("");
 
-        return `
-          <div class="dynamic-todos">
-            <div class="dynamic-todo-title">Scheduled To Do</div>
-            ${todos.map(todo => `
-              <div class="dynamic-todo-item ${todo.done ? "is-done" : ""}">
-                <span>${todo.done ? "✅" : "📝"}</span>
-                <span>${todo.time ? `<strong>${todo.time}</strong> · ` : ""}${escapeHtml(todo.text)}</span>
-              </div>
-            `).join("")}
-          </div>
-        `;
-      }
+    Array.prototype.forEach.call(document.querySelectorAll(".filter-btn"), function (button) {
+      button.addEventListener("click", function () {
+        var day = button.getAttribute("data-day");
+        renderFilters(day);
+        renderItinerary(day);
+      });
+    });
+  }
 
-      function activeDay() {
-        return document.querySelector(".filter-btn.active")?.dataset.day || "All";
-      }
+  function renderItinerary(selectedDay) {
+    var grid = byId("itineraryGrid");
+    if (!grid) return;
+    var items = selectedDay === "All" ? itinerary : itinerary.filter(function (item) { return item.day === selectedDay; });
 
-      function renderFilters(active = "All") {
-        if (!filters) return;
-        const days = ["All", ...itinerary.map(item => item.day)];
-        filters.innerHTML = days.map(day => `<button class="filter-btn ${day === active ? "active" : ""}" data-day="${day}" type="button">${day}</button>`).join("");
-        document.querySelectorAll(".filter-btn").forEach(button => {
-          button.addEventListener("click", () => {
-            renderFilters(button.dataset.day);
-            renderItinerary(button.dataset.day);
-          });
+    grid.innerHTML = items.map(function (item) {
+      return '<article class="card day-card">' +
+        '<div class="day-head"><div><div class="day-label">' + escapeHtml(item.day) + '</div><h3>' + escapeHtml(item.title) + '</h3><div class="day-location">' + escapeHtml(item.date) + ' · ' + escapeHtml(item.location) + '</div></div><div class="day-emoji">' + item.icon + '</div></div>' +
+        '<div class="vibe">' + escapeHtml(item.vibe) + '</div>' +
+        '<ul>' + item.plan.map(function (point) { return '<li><span>✅</span><span>' + escapeHtml(point) + '</span></li>'; }).join("") + '</ul>' +
+        renderTodosForItineraryDate(item.date) +
+      '</article>';
+    }).join("");
+  }
+
+  function renderChecklist() {
+    var checklistGrid = byId("checklist");
+    if (!checklistGrid) return;
+    var todos = getTodos();
+
+    checklistGrid.innerHTML = todos.map(function (todo) {
+      return '<div class="todo-item ' + (todo.done ? 'is-done' : '') + '" data-id="' + escapeHtml(todo.id) + '">' +
+        '<input class="todo-checkbox" type="checkbox" ' + (todo.done ? 'checked' : '') + ' aria-label="Mark task complete" />' +
+        '<input class="todo-text-input" type="text" value="' + escapeHtml(todo.text) + '" aria-label="Edit task" />' +
+        '<input class="todo-date-input" type="date" min="2026-05-19" max="2026-05-28" value="' + escapeHtml(todo.date) + '" aria-label="Edit task date" />' +
+        '<input class="todo-time-input" type="time" value="' + escapeHtml(todo.time) + '" aria-label="Edit task time" />' +
+        '<button class="todo-delete-btn" type="button">Remove</button>' +
+        '<div class="todo-date-hint">' + escapeHtml(formatTodoDateTime(todo)) + '</div>' +
+      '</div>';
+    }).join("");
+
+    Array.prototype.forEach.call(checklistGrid.querySelectorAll(".todo-item"), function (item) {
+      var id = item.getAttribute("data-id");
+      var checkbox = item.querySelector(".todo-checkbox");
+      var textInput = item.querySelector(".todo-text-input");
+      var dateInput = item.querySelector(".todo-date-input");
+      var timeInput = item.querySelector(".todo-time-input");
+      var deleteButton = item.querySelector(".todo-delete-btn");
+
+      function updateTodo(fields) {
+        var updated = getTodos().map(function (todo) {
+          if (todo.id !== id) return todo;
+          return Object.assign({}, todo, fields);
         });
+        saveTodos(updated);
+        renderItinerary(activeDay());
       }
 
-      function renderItinerary(active = "All") {
-        if (!grid) return;
-        const items = active === "All" ? itinerary : itinerary.filter(item => item.day === active);
-        grid.innerHTML = items.map(item => `
-          <article class="card day-card">
-            <div class="day-head">
-              <div>
-                <div class="day-label">${item.day}</div>
-                <h3>${item.title}</h3>
-                <div class="day-location">${item.date} · ${item.location}</div>
-              </div>
-              <div class="day-emoji">${item.icon}</div>
-            </div>
-            <div class="vibe">${item.vibe}</div>
-            <ul>${item.plan.map(point => `<li><span>✅</span><span>${escapeHtml(point)}</span></li>`).join("")}</ul>
-            ${renderTodosForItineraryDate(item.date)}
-          </article>
-        `).join("");
-      }
+      checkbox.addEventListener("change", function () {
+        updateTodo({ done: checkbox.checked });
+        item.classList.toggle("is-done", checkbox.checked);
+      });
 
-      function renderChecklist() {
-        if (!checklistGrid) return;
-        const todos = getTodos();
-        checklistGrid.innerHTML = todos.map(todo => `
-          <div class="todo-item ${todo.done ? "is-done" : ""}" data-id="${todo.id}">
-            <input class="todo-checkbox" type="checkbox" ${todo.done ? "checked" : ""} aria-label="Mark task complete" />
-            <input class="todo-text-input" type="text" value="${escapeHtml(todo.text)}" aria-label="Edit task" />
-            <input class="todo-date-input" type="date" min="2026-05-19" max="2026-05-28" value="${todo.date || ""}" aria-label="Edit task date" />
-            <input class="todo-time-input" type="time" value="${todo.time || ""}" aria-label="Edit task time" />
-            <button class="todo-delete-btn" type="button">Remove</button>
-            <div class="todo-date-hint">${formatTodoDateTime(todo) || "No date set — add a date to show this task in the itinerary."}</div>
-          </div>
-        `).join("");
+      textInput.addEventListener("input", function () {
+        updateTodo({ text: textInput.value });
+      });
 
-        checklistGrid.querySelectorAll(".todo-item").forEach(item => {
-          const id = item.dataset.id;
-          const checkbox = item.querySelector(".todo-checkbox");
-          const textInput = item.querySelector(".todo-text-input");
-          const dateInput = item.querySelector(".todo-date-input");
-          const timeInput = item.querySelector(".todo-time-input");
-          const deleteButton = item.querySelector(".todo-delete-btn");
-
-          checkbox.addEventListener("change", () => {
-            const updated = getTodos().map(todo => todo.id === id ? { ...todo, done: checkbox.checked } : todo);
-            saveTodos(updated);
-            item.classList.toggle("is-done", checkbox.checked);
-            renderItinerary(activeDay());
-          });
-
-          textInput.addEventListener("input", () => {
-            const updated = getTodos().map(todo => todo.id === id ? { ...todo, text: textInput.value } : todo);
-            saveTodos(updated);
-            renderItinerary(activeDay());
-          });
-
-          dateInput.addEventListener("change", () => {
-            const updated = getTodos().map(todo => todo.id === id ? { ...todo, date: dateInput.value } : todo);
-            saveTodos(updated);
-            renderChecklist();
-            renderItinerary(activeDay());
-          });
-
-          timeInput.addEventListener("change", () => {
-            const updated = getTodos().map(todo => todo.id === id ? { ...todo, time: timeInput.value } : todo);
-            saveTodos(updated);
-            renderChecklist();
-            renderItinerary(activeDay());
-          });
-
-          deleteButton.addEventListener("click", () => {
-            const updated = getTodos().filter(todo => todo.id !== id);
-            saveTodos(updated);
-            renderChecklist();
-            renderItinerary(activeDay());
-          });
-        });
-      }
-
-      function getSavedActivities() {
-        try {
-          return JSON.parse(localStorage.getItem("baliTripSelectedActivities") || "[]");
-        } catch (error) {
-          return [];
-        }
-      }
-
-      function saveActivities(activities) {
-        localStorage.setItem("baliTripSelectedActivities", JSON.stringify(activities));
-      }
-
-      function addActivityToChecklist(activity) {
-        const activities = getSavedActivities();
-        if (!activities.includes(activity)) activities.push(activity);
-        saveActivities(activities);
-
-        const todos = getTodos();
-        if (!todos.some(todo => todo.text === activity)) {
-          todos.push(createTodo(activity));
-          saveTodos(todos);
-        }
-
+      dateInput.addEventListener("change", function () {
+        updateTodo({ date: dateInput.value });
         renderChecklist();
-        updateActivityButtons();
-      }
-
-      function updateActivityButtons() {
-        const activities = getSavedActivities();
-        document.querySelectorAll(".activity-card").forEach(card => {
-          const activity = card.dataset.activity;
-          const button = card.querySelector(".add-activity-btn");
-          if (!button) return;
-          const selected = activities.includes(activity);
-          button.textContent = selected ? "Added ✓" : "Add to checklist";
-          button.disabled = selected;
-          button.classList.toggle("is-added", selected);
-        });
-      }
-
-      document.querySelectorAll(".add-activity-btn").forEach(button => {
-        button.addEventListener("click", () => {
-          const card = button.closest(".activity-card");
-          if (card?.dataset.activity) addActivityToChecklist(card.dataset.activity);
-        });
       });
 
-      if (todoForm) {
-        todoForm.addEventListener("submit", event => {
+      timeInput.addEventListener("change", function () {
+        updateTodo({ time: timeInput.value });
+        renderChecklist();
+      });
+
+      deleteButton.addEventListener("click", function () {
+        var updated = getTodos().filter(function (todo) { return todo.id !== id; });
+        saveTodos(updated);
+        renderChecklist();
+        renderItinerary(activeDay());
+      });
+    });
+  }
+
+  function addTodoFromInputs() {
+    var textInput = byId("todoInput");
+    var dateInput = byId("todoDateInput");
+    var timeInput = byId("todoTimeInput");
+    if (!textInput) return;
+
+    var text = textInput.value.trim();
+    if (!text) {
+      textInput.focus();
+      return;
+    }
+
+    var todos = getTodos();
+    todos.push(createTodo(text, false, dateInput ? dateInput.value : "", timeInput ? timeInput.value : ""));
+    saveTodos(todos);
+
+    textInput.value = "";
+    if (dateInput) dateInput.value = "";
+    if (timeInput) timeInput.value = "";
+
+    renderChecklist();
+    renderItinerary(activeDay());
+  }
+
+  function getSavedActivities() {
+    try { return JSON.parse(localStorage.getItem("baliTripSelectedActivities") || "[]"); }
+    catch (error) { return []; }
+  }
+
+  function saveActivities(activities) {
+    localStorage.setItem("baliTripSelectedActivities", JSON.stringify(activities));
+  }
+
+  function updateActivityButtons() {
+    var activities = getSavedActivities();
+    Array.prototype.forEach.call(document.querySelectorAll(".activity-card"), function (card) {
+      var activity = card.getAttribute("data-activity");
+      var button = card.querySelector(".add-activity-btn");
+      if (!button) return;
+      var selected = activities.indexOf(activity) !== -1;
+      button.textContent = selected ? "Added ✓" : "Add to checklist";
+      button.disabled = selected;
+      button.classList.toggle("is-added", selected);
+    });
+  }
+
+  function addActivityToChecklist(activity) {
+    var activities = getSavedActivities();
+    if (activities.indexOf(activity) === -1) activities.push(activity);
+    saveActivities(activities);
+
+    var todos = getTodos();
+    var exists = todos.some(function (todo) { return todo.text === activity; });
+    if (!exists) {
+      todos.push(createTodo(activity, false, "", ""));
+      saveTodos(todos);
+    }
+
+    renderChecklist();
+    updateActivityButtons();
+  }
+
+  function updateCountdown() {
+    var departureTime = new Date("2026-05-19T11:15:00+03:00").getTime();
+    var now = new Date().getTime();
+    var distance = departureTime - now;
+    var daysEl = byId("days");
+    var hoursEl = byId("hours");
+    var minutesEl = byId("minutes");
+    var secondsEl = byId("seconds");
+    var messageEl = byId("countdownMessage");
+    if (!daysEl || !hoursEl || !minutesEl || !secondsEl || !messageEl) return;
+
+    if (distance <= 0) {
+      daysEl.textContent = "0";
+      hoursEl.textContent = "0";
+      minutesEl.textContent = "0";
+      secondsEl.textContent = "0";
+      messageEl.textContent = "The Riyadh departure time has passed. Have an amazing Bali trip!";
+      return;
+    }
+
+    var days = Math.floor(distance / (1000 * 60 * 60 * 24));
+    var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+    var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+    var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+    daysEl.textContent = days;
+    hoursEl.textContent = String(hours).padStart(2, "0");
+    minutesEl.textContent = String(minutes).padStart(2, "0");
+    secondsEl.textContent = String(seconds).padStart(2, "0");
+    messageEl.textContent = "Departure: 19 May 2026 at 11:15 AM Riyadh time";
+  }
+
+  function updateBudgetTracker() {
+    var maxBudget = 7000;
+    var total = 0;
+    Array.prototype.forEach.call(document.querySelectorAll(".budget-input"), function (input) {
+      var value = Number(input.value || 0);
+      if (!Number.isNaN(value)) total += value;
+    });
+    var actualTotal = byId("actualTotal");
+    var budgetStatus = byId("budgetStatus");
+    if (!actualTotal || !budgetStatus) return;
+    var remaining = maxBudget - total;
+    actualTotal.textContent = total.toLocaleString("en-US");
+    budgetStatus.textContent = remaining >= 0
+      ? "Remaining: " + remaining.toLocaleString("en-US") + " SAR"
+      : "Over budget: " + Math.abs(remaining).toLocaleString("en-US") + " SAR";
+  }
+
+  function saveBudgetTracker() {
+    var data = {};
+    Array.prototype.forEach.call(document.querySelectorAll(".budget-input"), function (input) {
+      data[input.getAttribute("data-category")] = input.value || "0";
+    });
+    localStorage.setItem("baliTripBudgetTracker", JSON.stringify(data));
+    var saveStatus = byId("saveStatus");
+    if (saveStatus) saveStatus.textContent = "Saved";
+  }
+
+  function loadBudgetTracker() {
+    var saved = localStorage.getItem("baliTripBudgetTracker");
+    if (!saved) return;
+    try {
+      var data = JSON.parse(saved);
+      Array.prototype.forEach.call(document.querySelectorAll(".budget-input"), function (input) {
+        var key = input.getAttribute("data-category");
+        if (Object.prototype.hasOwnProperty.call(data, key)) input.value = data[key];
+      });
+      var saveStatus = byId("saveStatus");
+      if (saveStatus) saveStatus.textContent = "Loaded saved amounts";
+    } catch (error) {}
+  }
+
+  function clearBudgetTracker() {
+    localStorage.removeItem("baliTripBudgetTracker");
+    Array.prototype.forEach.call(document.querySelectorAll(".budget-input"), function (input) { input.value = "0"; });
+    updateBudgetTracker();
+    var saveStatus = byId("saveStatus");
+    if (saveStatus) saveStatus.textContent = "Saved amounts cleared";
+  }
+
+  function init() {
+    renderFilters("All");
+    renderItinerary("All");
+    renderChecklist();
+    updateActivityButtons();
+    updateCountdown();
+    loadBudgetTracker();
+    updateBudgetTracker();
+
+    var addButton = byId("todoAddButton");
+    if (addButton) addButton.addEventListener("click", addTodoFromInputs);
+
+    var todoText = byId("todoInput");
+    if (todoText) {
+      todoText.addEventListener("keydown", function (event) {
+        if (event.key === "Enter") {
           event.preventDefault();
-          const text = todoInput?.value.trim();
-          if (!text) return;
-
-          const updated = [
-            ...getTodos(),
-            createTodo(text, false, todoDateInput?.value || "", todoTimeInput?.value || "")
-          ];
-
-          saveTodos(updated);
-          if (todoInput) todoInput.value = "";
-          if (todoDateInput) todoDateInput.value = "";
-          if (todoTimeInput) todoTimeInput.value = "";
-          renderChecklist();
-          renderItinerary(activeDay());
-        });
-      }
-
-      function updateCountdown() {
-        const departureTime = new Date("2026-05-19T11:15:00+03:00").getTime();
-        const now = new Date().getTime();
-        const distance = departureTime - now;
-
-        const daysEl = document.getElementById("days");
-        const hoursEl = document.getElementById("hours");
-        const minutesEl = document.getElementById("minutes");
-        const secondsEl = document.getElementById("seconds");
-        const messageEl = document.getElementById("countdownMessage");
-
-        if (!daysEl || !hoursEl || !minutesEl || !secondsEl || !messageEl) return;
-
-        if (distance <= 0) {
-          daysEl.textContent = "0";
-          hoursEl.textContent = "0";
-          minutesEl.textContent = "0";
-          secondsEl.textContent = "0";
-          messageEl.textContent = "The Riyadh departure time has passed. Have an amazing Bali trip!";
-          return;
+          addTodoFromInputs();
         }
-
-        const days = Math.floor(distance / (1000 * 60 * 60 * 24));
-        const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-        const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-        const seconds = Math.floor((distance % (1000 * 60)) / 1000);
-
-        daysEl.textContent = days;
-        hoursEl.textContent = String(hours).padStart(2, "0");
-        minutesEl.textContent = String(minutes).padStart(2, "0");
-        secondsEl.textContent = String(seconds).padStart(2, "0");
-        messageEl.textContent = "Departure: 19 May 2026 at 11:15 AM Riyadh time";
-      }
-
-      function updateBudgetTracker() {
-        const maxBudget = 7000;
-        const inputs = document.querySelectorAll(".budget-input");
-        let total = 0;
-
-        inputs.forEach(input => {
-          const value = Number(input.value || 0);
-          if (!Number.isNaN(value)) total += value;
-        });
-
-        const actualTotal = document.getElementById("actualTotal");
-        const budgetStatus = document.getElementById("budgetStatus");
-        if (!actualTotal || !budgetStatus) return;
-
-        const remaining = maxBudget - total;
-        actualTotal.textContent = total.toLocaleString("en-US");
-        budgetStatus.textContent = remaining >= 0
-          ? `Remaining: ${remaining.toLocaleString("en-US")} SAR`
-          : `Over budget: ${Math.abs(remaining).toLocaleString("en-US")} SAR`;
-      }
-
-      function saveBudgetTracker() {
-        const data = {};
-        document.querySelectorAll(".budget-input").forEach(input => {
-          data[input.dataset.category] = input.value || "0";
-        });
-        localStorage.setItem("baliTripBudgetTracker", JSON.stringify(data));
-
-        const saveStatus = document.getElementById("saveStatus");
-        if (saveStatus) {
-          const now = new Date();
-          saveStatus.textContent = `Saved at ${now.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })}`;
-        }
-      }
-
-      function loadBudgetTracker() {
-        const saved = localStorage.getItem("baliTripBudgetTracker");
-        if (!saved) return;
-
-        try {
-          const data = JSON.parse(saved);
-          document.querySelectorAll(".budget-input").forEach(input => {
-            if (Object.prototype.hasOwnProperty.call(data, input.dataset.category)) {
-              input.value = data[input.dataset.category];
-            }
-          });
-
-          const saveStatus = document.getElementById("saveStatus");
-          if (saveStatus) saveStatus.textContent = "Loaded saved amounts";
-        } catch (error) {
-          console.warn("Could not load saved budget data", error);
-        }
-      }
-
-      function clearBudgetTracker() {
-        localStorage.removeItem("baliTripBudgetTracker");
-        document.querySelectorAll(".budget-input").forEach(input => {
-          input.value = "0";
-        });
-        updateBudgetTracker();
-
-        const saveStatus = document.getElementById("saveStatus");
-        if (saveStatus) saveStatus.textContent = "Saved amounts cleared";
-      }
-
-      document.querySelectorAll(".budget-input").forEach(input => {
-        input.addEventListener("input", updateBudgetTracker);
       });
+    }
 
-      document.getElementById("saveBudgetBtn")?.addEventListener("click", saveBudgetTracker);
-      document.getElementById("clearBudgetBtn")?.addEventListener("click", clearBudgetTracker);
+    Array.prototype.forEach.call(document.querySelectorAll(".add-activity-btn"), function (button) {
+      button.addEventListener("click", function () {
+        var card = button.closest(".activity-card");
+        if (card && card.getAttribute("data-activity")) addActivityToChecklist(card.getAttribute("data-activity"));
+      });
+    });
 
-      renderFilters();
-      renderItinerary();
-      renderChecklist();
-      updateActivityButtons();
-      updateCountdown();
-      loadBudgetTracker();
-      updateBudgetTracker();
-      setInterval(updateCountdown, 1000);
-    })();
-  </script>
+    Array.prototype.forEach.call(document.querySelectorAll(".budget-input"), function (input) {
+      input.addEventListener("input", updateBudgetTracker);
+    });
+
+    var saveBudgetButton = byId("saveBudgetBtn");
+    if (saveBudgetButton) saveBudgetButton.addEventListener("click", saveBudgetTracker);
+    var clearBudgetButton = byId("clearBudgetBtn");
+    if (clearBudgetButton) clearBudgetButton.addEventListener("click", clearBudgetTracker);
+
+    setInterval(updateCountdown, 1000);
+  }
+
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", init);
+  } else {
+    init();
+  }
+})();
+</script>
 </body>
 </html>
