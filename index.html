@@ -383,6 +383,62 @@
     .cost-row strong { color: var(--slate-800); }
     .cost-row span { color: var(--slate-500); text-align: right; font-size: 14px; }
 
+    .budget-table-wrap {
+      overflow-x: auto;
+      border: 1px solid var(--slate-200);
+      border-radius: 22px;
+      background: var(--white);
+    }
+
+    .budget-table {
+      width: 100%;
+      border-collapse: collapse;
+      min-width: 760px;
+      font-size: 14px;
+    }
+
+    .budget-table th,
+    .budget-table td {
+      padding: 15px;
+      border-bottom: 1px solid var(--slate-200);
+      text-align: left;
+      vertical-align: top;
+    }
+
+    .budget-table th {
+      background: var(--slate-100);
+      color: var(--slate-800);
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: .1em;
+    }
+
+    .budget-table tbody td:first-child,
+    .budget-table tfoot td {
+      font-weight: 850;
+      color: var(--slate-900);
+    }
+
+    .budget-table tfoot td {
+      background: var(--teal-50);
+      border-bottom: 0;
+    }
+
+    .budget-input {
+      width: 120px;
+      border: 1px solid var(--slate-200);
+      border-radius: 12px;
+      padding: 10px 12px;
+      font: inherit;
+      color: var(--slate-900);
+      background: #fff;
+    }
+
+    .budget-input:focus {
+      outline: 2px solid var(--teal-100);
+      border-color: var(--teal-600);
+    }
+
     .final {
       padding-bottom: 76px;
     }
@@ -476,7 +532,7 @@
       </div>
       <div class="grid-3">
         <div class="card"><div class="card-icon">✈️</div><h3>Confirmed Flights</h3><p>Etihad/Saudia route via Abu Dhabi with confirmed 30kg checked baggage on each segment.</p></div>
-        <div class="card"><div class="card-icon">🛏️</div><h3>Updated Stay Plan</h3><p>Stay in Ubud first for nature, then use Canggu as the main base for Canggu, Seminyak, Umalas, and one Uluwatu day trip.</p></div>
+        <div class="card"><div class="card-icon">🛏️</div><h3>Confirmed Villas</h3><p>Confirmed stay plan: Ubud first for nature, then Canggu as the main base for Canggu, Seminyak, Umalas, and one Uluwatu day trip.</p></div>
         <div class="card"><div class="card-icon">💳</div><h3>Bali Budget</h3><p>Plan around 3,000–4,000 SAR per person for the Bali stay, excluding the confirmed flight ticket.</p></div>
       </div>
     </div>
@@ -572,29 +628,29 @@
         <div class="card">
           <div class="card-icon">🌴</div>
           <div class="day-label">Ubud · 20–21 May · Checkout 22 May</div>
-          <h3>Private Pool-Villa 2 Bedroom In Ubud Centre</h3>
-          <p>First stay after arriving in Bali. Keep these days Ubud-only for rice terraces, waterfalls, temples, spas, and Ubud cafés.</p>
+          <h3>Elegant 2Br Villa near Ubud Center</h3>
+          <p>Confirmed first stay after arriving in Bali. Keep these days Ubud-only for rice terraces, waterfalls, temples, spas, and Ubud cafés.</p>
           <div class="mini-grid">
             <div class="mini-box"><strong>Nights</strong>2 nights</div>
-            <div class="mini-box"><strong>Area</strong>Ubud Centre</div>
-            <div class="mini-box"><strong>Setup</strong>2 bedrooms · 2 beds</div>
-            <div class="mini-box"><strong>Best for</strong>Nature + culture</div>
+            <div class="mini-box"><strong>Area</strong>Ubud / Tampaksiring</div>
+            <div class="mini-box"><strong>Setup</strong>2 bedrooms · 2 beds · 2 baths</div>
+            <div class="mini-box"><strong>Status</strong>Confirmed booking</div>
           </div>
-          <a class="btn btn-primary" style="margin-top:18px;" target="_blank" rel="noopener" href="https://www.airbnb.com/rooms/963311048970455218">Open Airbnb listing</a>
+          <a class="btn btn-primary" style="margin-top:18px;" target="_blank" rel="noopener" href="https://www.airbnb.com/rooms/1279508458960849759">Open Airbnb listing</a>
         </div>
 
         <div class="card">
           <div class="card-icon">🌊</div>
           <div class="day-label">Canggu · 22–26 May · Checkout 27 May</div>
-          <h3>Sweet Canggu Escape with 2 Motorcycles</h3>
-          <p>Main base for the rest of the trip. Use it for Canggu, Berawa, Pererenan, Seminyak, Umalas, and one planned Uluwatu day trip.</p>
+          <h3>Villa Kita 1 Canggu | Summerhouse Bali</h3>
+          <p>Confirmed main base for the rest of the trip. Use it for Canggu, Berawa, Pererenan, Seminyak, Umalas, and one planned Uluwatu day trip.</p>
           <div class="mini-grid">
             <div class="mini-box"><strong>Nights</strong>5 nights</div>
-            <div class="mini-box"><strong>Area</strong>Canggu / Kuta Utara</div>
-            <div class="mini-box"><strong>Setup</strong>2 bedrooms · 2 beds</div>
-            <div class="mini-box"><strong>Best for</strong>Beach + cafés + base</div>
+            <div class="mini-box"><strong>Area</strong>Canggu / Berawa</div>
+            <div class="mini-box"><strong>Setup</strong>2 bedrooms · 2 beds · 2 baths</div>
+            <div class="mini-box"><strong>Status</strong>Confirmed booking</div>
           </div>
-          <a class="btn btn-primary" style="margin-top:18px;" target="_blank" rel="noopener" href="https://www.airbnb.com/rooms/618441085075451959">Open Airbnb listing</a>
+          <a class="btn btn-primary" style="margin-top:18px;" target="_blank" rel="noopener" href="https://www.airbnb.com/rooms/1309195241241236991">Open Airbnb listing</a>
         </div>
       </div>
     </div>
@@ -629,13 +685,60 @@
       <div>
         <div class="section-title"><div class="eyebrow">Budget</div><h2>Budget tracker</h2><p>Ground budget excludes confirmed flight ticket cost.</p></div>
         <div class="card">
-          <div class="budget-main"><div class="small">Target Bali budget</div><div class="big">3,000–4,000 SAR</div><p>Per person for the Bali stay, excluding flights.</p></div>
-          <div class="cost-row"><strong>Confirmed flights</strong><span>4,133 SAR per person</span></div>
-          <div class="cost-row"><strong>Bali ground budget</strong><span>3,000–4,000 SAR per person</span></div>
-          <div class="cost-row"><strong>Airbnb</strong><span>TBD — choose within budget</span></div>
-          <div class="cost-row"><strong>Food & cafés</strong><span>Daily budget from ground budget</span></div>
-          <div class="cost-row"><strong>Activities</strong><span>Prioritize Ubud, Uluwatu, Nusa Penida</span></div>
-          <div class="cost-row"><strong>Transport</strong><span>Drivers, transfers, fast boat if needed</span></div>
+          <div class="budget-main"><div class="small">Total Bali budget</div><div class="big">3,500 SAR</div><p>Per person. Includes villas, transportation, activities, food, cafés, and miscellaneous costs. Flights are separate.</p></div>
+          <div class="budget-table-wrap">
+            <table class="budget-table" aria-label="Budget tracker per person">
+              <thead>
+                <tr>
+                  <th>Category</th>
+                  <th>Planned SAR / person</th>
+                  <th>Actual SAR / person</th>
+                  <th>Notes</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>Villas / accommodation</td>
+                  <td>1,400</td>
+                  <td><input class="budget-input" type="number" min="0" value="0" data-category="Accommodation" /></td>
+                  <td>Ubud 2 nights + Canggu 5 nights</td>
+                </tr>
+                <tr>
+                  <td>Transportation</td>
+                  <td>450</td>
+                  <td><input class="budget-input" type="number" min="0" value="0" data-category="Transportation" /></td>
+                  <td>Airport transfers, drivers, scooters, day trip transport</td>
+                </tr>
+                <tr>
+                  <td>Activities</td>
+                  <td>650</td>
+                  <td><input class="budget-input" type="number" min="0" value="0" data-category="Activities" /></td>
+                  <td>Ubud activities, Uluwatu day trip, beach clubs, spa</td>
+                </tr>
+                <tr>
+                  <td>Food & cafés</td>
+                  <td>750</td>
+                  <td><input class="budget-input" type="number" min="0" value="0" data-category="Food" /></td>
+                  <td>Meals, cafés, snacks, final dinner</td>
+                </tr>
+                <tr>
+                  <td>Shopping / emergency</td>
+                  <td>250</td>
+                  <td><input class="budget-input" type="number" min="0" value="0" data-category="Misc" /></td>
+                  <td>Souvenirs, laundry, SIM/eSIM, small extras</td>
+                </tr>
+              </tbody>
+              <tfoot>
+                <tr>
+                  <td>Total</td>
+                  <td>3,500</td>
+                  <td id="actualTotal">0</td>
+                  <td id="budgetStatus">Remaining: 3,500 SAR</td>
+                </tr>
+              </tfoot>
+            </table>
+          </div>
+          <p class="muted" style="margin-top:14px;">Tip: Fill the “Actual” column as you confirm prices. The total and remaining amount update automatically on your browser.</p>
         </div>
       </div>
     </div>
@@ -865,10 +968,36 @@
       messageEl.textContent = "Departure: 19 May 2026 at 11:15 AM Riyadh time";
     }
 
+    function updateBudgetTracker() {
+      const maxBudget = 3500;
+      const inputs = document.querySelectorAll(".budget-input");
+      let total = 0;
+
+      inputs.forEach(input => {
+        const value = Number(input.value || 0);
+        if (!Number.isNaN(value)) total += value;
+      });
+
+      const actualTotal = document.getElementById("actualTotal");
+      const budgetStatus = document.getElementById("budgetStatus");
+      if (!actualTotal || !budgetStatus) return;
+
+      const remaining = maxBudget - total;
+      actualTotal.textContent = total.toLocaleString("en-US");
+      budgetStatus.textContent = remaining >= 0
+        ? `Remaining: ${remaining.toLocaleString("en-US")} SAR`
+        : `Over budget: ${Math.abs(remaining).toLocaleString("en-US")} SAR`;
+    }
+
+    document.querySelectorAll(".budget-input").forEach(input => {
+      input.addEventListener("input", updateBudgetTracker);
+    });
+
     renderFilters();
     renderItinerary();
     renderChecklist();
     updateCountdown();
+    updateBudgetTracker();
     setInterval(updateCountdown, 1000);
   </script>
 </body>
