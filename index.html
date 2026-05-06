@@ -490,6 +490,7 @@
       border: 1px solid var(--slate-200);
       border-radius: 22px;
       background: var(--white);
+      -webkit-overflow-scrolling: touch;
     }
 
     .budget-table {
@@ -576,6 +577,94 @@
     .checklist-item {
       position: relative;
       padding-bottom: 48px;
+    }
+
+    .todo-card {
+      max-width: 100%;
+      overflow: hidden;
+    }
+
+    .todo-add-form {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      gap: 10px;
+      margin-bottom: 16px;
+    }
+
+    .todo-add-form input,
+    .todo-text-input {
+      width: 100%;
+      min-width: 0;
+      border: 1px solid var(--slate-200);
+      border-radius: 16px;
+      padding: 13px 14px;
+      font: inherit;
+      color: var(--slate-900);
+      background: #fff;
+    }
+
+    .todo-add-form input:focus,
+    .todo-text-input:focus {
+      outline: 2px solid var(--teal-100);
+      border-color: var(--teal-600);
+    }
+
+    .todo-list {
+      display: grid;
+      gap: 12px;
+    }
+
+    .todo-item {
+      display: grid;
+      grid-template-columns: auto minmax(0, 1fr) auto;
+      gap: 12px;
+      align-items: center;
+      padding: 14px;
+      border-radius: 18px;
+      background: var(--slate-100);
+      color: var(--slate-800);
+      min-width: 0;
+    }
+
+    .todo-checkbox {
+      width: 22px;
+      height: 22px;
+      accent-color: var(--teal-600);
+    }
+
+    .todo-text-input {
+      background: transparent;
+      border-color: transparent;
+      font-weight: 750;
+      line-height: 1.45;
+      overflow-wrap: anywhere;
+    }
+
+    .todo-text-input:focus {
+      background: #fff;
+    }
+
+    .todo-item.is-done .todo-text-input {
+      text-decoration: line-through;
+      color: var(--slate-500);
+    }
+
+    .todo-delete-btn {
+      border: 1px solid var(--slate-200);
+      background: #fff;
+      color: var(--slate-600);
+      border-radius: 999px;
+      padding: 8px 10px;
+      font: inherit;
+      font-size: 12px;
+      font-weight: 850;
+      cursor: pointer;
+      white-space: nowrap;
+    }
+
+    .todo-delete-btn:hover {
+      background: var(--slate-950);
+      color: #fff;
     }
 
     .remove-activity-btn {
@@ -714,7 +803,51 @@
         flex: 0 0 auto;
       }
       .budget-table {
-        min-width: 640px;
+        min-width: 0;
+        width: 100%;
+      }
+
+      .budget-table thead {
+        display: none;
+      }
+
+      .budget-table,
+      .budget-table tbody,
+      .budget-table tfoot,
+      .budget-table tr,
+      .budget-table td {
+        display: block;
+      }
+
+      .budget-table tbody tr,
+      .budget-table tfoot tr {
+        border-bottom: 1px solid var(--slate-200);
+        padding: 12px;
+      }
+
+      .budget-table tbody tr:last-child,
+      .budget-table tfoot tr:last-child {
+        border-bottom: 0;
+      }
+
+      .budget-table td {
+        border-bottom: 0;
+        padding: 8px 4px;
+      }
+
+      .budget-table td::before {
+        content: attr(data-label);
+        display: block;
+        margin-bottom: 4px;
+        color: var(--slate-500);
+        font-size: 11px;
+        text-transform: uppercase;
+        letter-spacing: .1em;
+        font-weight: 900;
+      }
+
+      .budget-input {
+        width: 100%;
       }
       .activity-card .btn {
         width: 100%;
@@ -938,8 +1071,14 @@
   <section class="alt" id="checklist-section">
     <div class="container grid-2">
       <div>
-        <div class="section-title"><div class="eyebrow">Checklist</div><h2>Before you fly</h2><p>Updated with flight and booking reminders.</p></div>
-        <div class="card"><div class="mini-grid" id="checklist"></div></div>
+        <div class="section-title"><div class="eyebrow">Checklist</div><h2>To Do List</h2><p>Add, edit, remove, check, and uncheck trip tasks. Your changes save automatically on this device.</p></div>
+        <div class="card todo-card">
+          <form class="todo-add-form" id="todoAddForm">
+            <input id="todoInput" type="text" placeholder="Add a new task, activity, booking note..." aria-label="Add a new to do item" />
+            <button class="btn btn-primary" type="submit">Add</button>
+          </form>
+          <div class="todo-list" id="checklist"></div>
+        </div>
       </div>
       <div id="budget">
         <div class="section-title"><div class="eyebrow">Budget</div><h2>Budget tracker</h2><p>Ground budget excludes confirmed flight ticket cost.</p></div>
@@ -962,42 +1101,42 @@
               </thead>
               <tbody>
                 <tr>
-                  <td>Villas / accommodation</td>
-                  <td>2,800</td>
-                  <td><input class="budget-input" type="number" min="0" value="0" data-category="Accommodation" /></td>
-                  <td>Ubud 2 nights + Canggu 5 nights</td>
+                  <td data-label="Category">Villas / accommodation</td>
+                  <td data-label="Planned SAR total">2,800</td>
+                  <td data-label="Paid / Actual SAR total"><input class="budget-input" type="number" min="0" value="0" data-category="Accommodation" /></td>
+                  <td data-label="Notes">Ubud 2 nights + Canggu 5 nights</td>
                 </tr>
                 <tr>
-                  <td>Transportation</td>
-                  <td>900</td>
-                  <td><input class="budget-input" type="number" min="0" value="0" data-category="Transportation" /></td>
-                  <td>Airport transfers, drivers, scooters, day trip transport</td>
+                  <td data-label="Category">Transportation</td>
+                  <td data-label="Planned SAR total">900</td>
+                  <td data-label="Paid / Actual SAR total"><input class="budget-input" type="number" min="0" value="0" data-category="Transportation" /></td>
+                  <td data-label="Notes">Airport transfers, drivers, scooters, day trip transport</td>
                 </tr>
                 <tr>
-                  <td>Activities</td>
-                  <td>1,300</td>
-                  <td><input class="budget-input" type="number" min="0" value="0" data-category="Activities" /></td>
-                  <td>Ubud activities, Uluwatu day trip, beach clubs, spa</td>
+                  <td data-label="Category">Activities</td>
+                  <td data-label="Planned SAR total">1,300</td>
+                  <td data-label="Paid / Actual SAR total"><input class="budget-input" type="number" min="0" value="0" data-category="Activities" /></td>
+                  <td data-label="Notes">Ubud activities, Uluwatu day trip, beach clubs, spa</td>
                 </tr>
                 <tr>
-                  <td>Food & cafés</td>
-                  <td>1,500</td>
-                  <td><input class="budget-input" type="number" min="0" value="0" data-category="Food" /></td>
-                  <td>Meals, cafés, snacks, final dinner</td>
+                  <td data-label="Category">Food & cafés</td>
+                  <td data-label="Planned SAR total">1,500</td>
+                  <td data-label="Paid / Actual SAR total"><input class="budget-input" type="number" min="0" value="0" data-category="Food" /></td>
+                  <td data-label="Notes">Meals, cafés, snacks, final dinner</td>
                 </tr>
                 <tr>
-                  <td>Shopping / emergency</td>
-                  <td>500</td>
-                  <td><input class="budget-input" type="number" min="0" value="0" data-category="Misc" /></td>
-                  <td>Souvenirs, laundry, SIM/eSIM, small extras</td>
+                  <td data-label="Category">Shopping / emergency</td>
+                  <td data-label="Planned SAR total">500</td>
+                  <td data-label="Paid / Actual SAR total"><input class="budget-input" type="number" min="0" value="0" data-category="Misc" /></td>
+                  <td data-label="Notes">Souvenirs, laundry, SIM/eSIM, small extras</td>
                 </tr>
               </tbody>
               <tfoot>
                 <tr>
-                  <td>Total</td>
-                  <td>7,000</td>
-                  <td id="actualTotal">0</td>
-                  <td id="budgetStatus">Remaining: 7,000 SAR</td>
+                  <td data-label="Category">Total</td>
+                  <td data-label="Planned SAR total">7,000</td>
+                  <td data-label="Paid / Actual SAR total" id="actualTotal">0</td>
+                  <td data-label="Status" id="budgetStatus">Remaining: 7,000 SAR</td>
                 </tr>
               </tfoot>
             </table>
@@ -1194,24 +1333,95 @@
       `).join("");
     }
 
-    function renderChecklist() {
-      const savedActivities = getSavedActivities();
-      const allItems = [...checklist, ...savedActivities.map(item => `Activity: ${item}`)];
-      checklistGrid.innerHTML = allItems.map((item, index) => {
-        const isActivity = item.startsWith("Activity: ");
-        const activityName = isActivity ? item.replace("Activity: ", "") : "";
-        return `
-          <div class="mini-box checklist-item">
-            <strong>✅</strong>${item}
-            ${isActivity ? `<button class="remove-activity-btn" type="button" data-activity="${activityName.replace(/"/g, "&quot;")}">Remove</button>` : ""}
-          </div>
-        `;
-      }).join("");
+    const defaultTodos = [
+      "Passport valid for at least 6 months",
+      "Check Indonesia entry requirements before flying",
+      "Airbnb booking confirmation",
+      "Private airport transfer from DPS",
+      "Travel insurance",
+      "International card + some cash",
+      "Light clothes and swimwear",
+      "Universal adapter",
+      "Sunscreen and sunglasses",
+      "Download Etihad app for flight updates",
+      "Book Nusa Penida only after checking weather/sea conditions",
+      "Keep flight booking reference H6SQC7 saved offline"
+    ];
 
-      document.querySelectorAll(".remove-activity-btn").forEach(button => {
-        button.addEventListener("click", () => removeActivityFromChecklist(button.dataset.activity));
+    function createTodo(text, done = false) {
+      return {
+        id: `todo-${Date.now()}-${Math.random().toString(16).slice(2)}`,
+        text,
+        done
+      };
+    }
+
+    function getTodos() {
+      const saved = localStorage.getItem("baliTripTodos");
+      if (!saved) return defaultTodos.map(text => createTodo(text));
+
+      try {
+        const parsed = JSON.parse(saved);
+        if (!Array.isArray(parsed)) return defaultTodos.map(text => createTodo(text));
+        return parsed.map(item => ({
+          id: item.id || `todo-${Date.now()}-${Math.random().toString(16).slice(2)}`,
+          text: item.text || "Untitled task",
+          done: Boolean(item.done)
+        }));
+      } catch (error) {
+        return defaultTodos.map(text => createTodo(text));
+      }
+    }
+
+    function saveTodos(todos) {
+      localStorage.setItem("baliTripTodos", JSON.stringify(todos));
+    }
+
+    function renderChecklist() {
+      const todos = getTodos();
+      checklistGrid.innerHTML = todos.map(todo => `
+        <div class="todo-item ${todo.done ? "is-done" : ""}" data-id="${todo.id}">
+          <input class="todo-checkbox" type="checkbox" ${todo.done ? "checked" : ""} aria-label="Mark task complete" />
+          <input class="todo-text-input" type="text" value="${todo.text.replace(/&/g, "&amp;").replace(/"/g, "&quot;").replace(/</g, "&lt;").replace(/>/g, "&gt;")}" aria-label="Edit task" />
+          <button class="todo-delete-btn" type="button">Remove</button>
+        </div>
+      `).join("");
+
+      document.querySelectorAll(".todo-item").forEach(item => {
+        const id = item.dataset.id;
+        const checkbox = item.querySelector(".todo-checkbox");
+        const input = item.querySelector(".todo-text-input");
+        const deleteBtn = item.querySelector(".todo-delete-btn");
+
+        checkbox.addEventListener("change", () => {
+          const updated = getTodos().map(todo => todo.id === id ? { ...todo, done: checkbox.checked } : todo);
+          saveTodos(updated);
+          item.classList.toggle("is-done", checkbox.checked);
+        });
+
+        input.addEventListener("input", () => {
+          const updated = getTodos().map(todo => todo.id === id ? { ...todo, text: input.value } : todo);
+          saveTodos(updated);
+        });
+
+        deleteBtn.addEventListener("click", () => {
+          const updated = getTodos().filter(todo => todo.id !== id);
+          saveTodos(updated);
+          renderChecklist();
+        });
       });
     }
+
+    document.getElementById("todoAddForm")?.addEventListener("submit", event => {
+      event.preventDefault();
+      const input = document.getElementById("todoInput");
+      const text = input.value.trim();
+      if (!text) return;
+      const updated = [...getTodos(), createTodo(text)];
+      saveTodos(updated);
+      input.value = "";
+      renderChecklist();
+    });
 
     function getSavedActivities() {
       try {
@@ -1229,6 +1439,13 @@
       const activities = getSavedActivities();
       if (!activities.includes(activity)) activities.push(activity);
       saveActivities(activities);
+
+      const todos = getTodos();
+      if (!todos.some(todo => todo.text === activity)) {
+        todos.push(createTodo(activity));
+        saveTodos(todos);
+      }
+
       renderChecklist();
       updateActivityButtons();
     }
@@ -1236,6 +1453,8 @@
     function removeActivityFromChecklist(activity) {
       const activities = getSavedActivities().filter(item => item !== activity);
       saveActivities(activities);
+      const todos = getTodos().filter(todo => todo.text !== activity);
+      saveTodos(todos);
       renderChecklist();
       updateActivityButtons();
     }
